@@ -24,9 +24,9 @@ class CreateProvidersTable extends Migration
             $table->string("street_address")->nullable();
             $table->string("street_number")->nullable();
             $table->string("colony")->nullable();
-            $table->string("country")->nullable();
-            $table->string("state")->nullable();
-            $table->string("city")->nullable();
+            $table->unsignedInteger("country_id")->nullable();
+            $table->unsignedInteger("state_id")->nullable();
+            $table->unsignedInteger("citiy_id")->nullable();
             $table->string("zip_code")->nullable();
             $table->string("phone")->nullable();
             $table->string("main_shareholder")->nullable();
@@ -36,7 +36,7 @@ class CreateProvidersTable extends Migration
             $table->string("email_purchase_orders")->nullable();
             $table->string("website")->nullable();
             $table->boolean("retention")->default(0);
-            $table->string("retention_country")->nullable();
+            $table->unsignedInteger("retention_country_id")->nullable();
             $table->boolean("contracted")->default(0)->comment("1 contratado, 2 rechazado, 0 en espera");
             $table->text("note")->nullable();
             $table->foreignId("user_id")->constrained();
