@@ -26,7 +26,7 @@ class CreateProvidersTable extends Migration
             $table->string("colony")->nullable();
             $table->unsignedInteger("country_id")->nullable();
             $table->unsignedInteger("state_id")->nullable();
-            $table->unsignedInteger("citiy_id")->nullable();
+            $table->unsignedInteger("city_id")->nullable();
             $table->string("zip_code")->nullable();
             $table->string("phone")->nullable();
             $table->string("main_shareholder")->nullable();

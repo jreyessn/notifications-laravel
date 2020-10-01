@@ -17,6 +17,8 @@ class CreateDocumentsTable extends Migration
             $table->id();
             $table->string("title", 100);
             $table->string("description")->nullable();
+            $table->string("file_input_name", 50);
+            $table->string("folder", 50);
             $table->string("example")->nullable()->comment("Aquí va el archivo de ejemplo para el form");
             $table->timestamps();
             $table->softDeletes();

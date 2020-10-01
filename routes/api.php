@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('files', 'FileController');
+Route::apiResource('providers', 'ProviderController');
 
 // Métodos no tienen crud, solo list
 

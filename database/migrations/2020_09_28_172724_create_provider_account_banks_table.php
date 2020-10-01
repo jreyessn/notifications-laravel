@@ -18,9 +18,11 @@ class CreateProviderAccountBanksTable extends Migration
             $table->foreignId("provider_id")->constrained()->onDelete("cascade");
             $table->string("account_holder");
             $table->string("account_number");
-            $table->string("account_clabe");
+            $table->string("account_clabe")->nullable();
             $table->string("bank_name");
             $table->string("bank_address");
+            $table->string("swift_code")->nullable();
+            $table->string("routing_aba_number")->nullable();
             $table->foreignId("bank_country_id")->constrained();
             $table->foreignId("bank_id")->constrained();
             $table->timestamps();
