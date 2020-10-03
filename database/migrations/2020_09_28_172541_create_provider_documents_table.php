@@ -18,7 +18,7 @@ class CreateProviderDocumentsTable extends Migration
             $table->foreignId("document_id")->constrained();
             $table->foreignId("provider_id")->constrained();
             $table->string("name");
-            $table->timestamp("date");
+            $table->date("date")->nullable();
             $table->boolean("approved")->default(0)->comment("0 en revision, 1 aprovado, 2 rechazado");
             $table->text("note")->nullable();
             $table->timestamps();

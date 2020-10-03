@@ -20,6 +20,26 @@ class ProviderStoreRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation() 
+    {
+        if(!is_null($this->constancia_situacion_fiscal_file)){
+            $this->merge(['constancia_situacion_fiscal_date' => $this->captureDate($this->constancia_situacion_fiscal_file)]);
+        }
+        
+        if(!is_null($this->estado_cuenta_file)){
+            $this->merge(['estado_cuenta_date' => $this->captureDate($this->estado_cuenta_file)]);
+        }
+        
+        if(!is_null($this->formato_32d_file)){
+            $this->merge(['formato_32d_date' => $this->captureDate($this->formato_32d_file)]);
+        }
+        
+        if(!is_null($this->comprobante_domicilio_file)){
+            $this->merge(['comprobante_domicilio_date' => $this->captureDate($this->comprobante_domicilio_file)]);
+        }
+    } 
+    
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,8 +47,6 @@ class ProviderStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $this->captureDateDocuments();
-
         return [
             'applicant_name' => 'required',
             'business_name' => 'required',
@@ -71,19 +89,19 @@ class ProviderStoreRequest extends FormRequest
             'acta_constitutiva_date' => 'date|nullable',
 
             'constancia_situacion_fiscal_file' => 'file|nullable',
-            'constancia_situacion_fiscal_date' => [new ValidDateDocument],
+            'constancia_situacion_fiscal_date' => ['nullable', new ValidDateDocument],
 
             'copia_identificacion_file' => 'file|nullable',
             'copia_identificacion_date' => 'date|nullable',
 
             'formato_32d_file' => 'file|nullable',
-            'formato_32d_date' => 'date|nullable',
+            'formato_32d_date' => ['nullable', new ValidDateDocument],
 
             'estado_cuenta_file' => 'file|nullable',
-            'estado_cuenta_date' => 'date|nullable',
+            'estado_cuenta_date' => ['nullable', new ValidDateDocument],
 
             'comprobante_domicilio_file' => 'file|nullable',
-            'comprobante_domicilio_date' => 'date|nullable',
+            'comprobante_domicilio_date' => ['nullable', new ValidDateDocument],
 
             'imss_file' => 'file|nullable',
             'imss_date' => 'date|nullable',
@@ -97,26 +115,6 @@ class ProviderStoreRequest extends FormRequest
             'account_routing_file' => 'file|nullable',
             'account_routing_date' => 'date|nullable',
         ];
-    }
-
-    private function captureDateDocuments(){
-
-        if(!is_null($this->constancia_situacion_fiscal_file)){
-            $this['constancia_situacion_fiscal_date'] = $this->captureDate($this->constancia_situacion_fiscal_file);
-        }
-
-        if(!is_null($this->estado_cuenta_file)){
-            $this['estado_cuenta_date'] = $this->captureDate($this->estado_cuenta_file);
-        }
-
-        if(!is_null($this->formato_32d_file)){
-            $this['formato_32d_date'] = $this->captureDate($this->formato_32d_file);
-        }
-
-        if(!is_null($this->comprobante_domicilio_file)){
-            $this['comprobante_domicilio_date'] = $this->captureDate($this->comprobante_domicilio_file);
-        }
-
     }
 
     private function captureDate($value){
@@ -168,6 +166,11 @@ class ProviderStoreRequest extends FormRequest
             'email_purchase_orders' => 'Correo para Ordenes de Compra',
             'website' => 'Sitio Web',
             'retention' => 'Retención',
+
+            'constancia_situacion_fiscal_date' => "Fecha de la Constancia de Situación Fiscal",
+            'estado_cuenta_date' => "Fecha del Estado de Cuenta",
+            'formato_32d_date' => "Fecha del Formato 32d",
+            'comprobante_domicilio_date' => "Fecha del Comprobante de Domicilio",
         ];
     }
 

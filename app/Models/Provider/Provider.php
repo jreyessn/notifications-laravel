@@ -34,6 +34,7 @@ class Provider extends Model
         "retention",
         "retention_country_id", 
         "contracted",
+        "can_edit",
         "note",
         "user_id"
     ];
@@ -48,5 +49,13 @@ class Provider extends Model
 
     public function retention_indicators(){
         return $this->belongsToMany('App\Models\RetentionIndicator', 'provider_retention_indicators');
+    }
+
+    public function documents(){
+        return $this->hasMany('App\Models\Provider\ProviderDocument');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
     }
 }

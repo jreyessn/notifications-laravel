@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidDateDocument implements Rule
@@ -25,7 +26,13 @@ class ValidDateDocument implements Rule
      */
     public function passes($attribute, $value)
     {
-        dd($attribute, $value);
+        $date = new Carbon($value);
+        $now = Carbon::now();
+
+        if($date->diffInMonths($now) > 3)
+            return false;
+        return true;
+ 
     }
 
     /**
@@ -35,6 +42,6 @@ class ValidDateDocument implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'La fecha del :attribute debe ser inferior a los 3 meses.';
     }
 }

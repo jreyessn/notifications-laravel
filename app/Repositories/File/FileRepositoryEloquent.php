@@ -19,7 +19,6 @@ class FileRepositoryEloquent extends AppRepository implements FileRepository
     protected $fieldSearchable = [
         'title' => 'like',
         'name' => 'like',
-        'type',
     ];
 
     /**
@@ -40,7 +39,7 @@ class FileRepositoryEloquent extends AppRepository implements FileRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-        $this->pushCriteria(app(FileCriteria::class));
+        $this->pushCriteria('App\Criteria\FileCriteria');
     }
     
 }

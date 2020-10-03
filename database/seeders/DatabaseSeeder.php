@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\File::factory(10)->create();
 
         $this->call([
+            PermissionsTableSeeder::class,
             UserSeeder::class,
             AccountsGroupsSeeder::class,
             AssociatedAccountsSeeder::class,

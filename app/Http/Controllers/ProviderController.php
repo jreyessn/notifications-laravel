@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Custom\PDF2Text;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProviderRequestEdit;
+use Illuminate\Support\Facades\Mail;
+
+use App\Notifications\RequestEditInformation;
+use App\Notifications\ApprovedEditInformation;
+use App\Repositories\Users\UserRepositoryEloquent;
 use App\Http\Requests\Provider\ProviderStoreRequest;
 use App\Repositories\Provider\ProviderRepositoryEloquent;
 
@@ -14,9 +19,11 @@ class ProviderController extends Controller
     private $providerRepository;
 
     public function __construct(
-        ProviderRepositoryEloquent $providerRepository
+        ProviderRepositoryEloquent $providerRepository,
+        UserRepositoryEloquent $userRepository
     ){
         $this->providerRepository = $providerRepository;
+        $this->userRepository = $userRepository;
     }
     /**
      * Display a listing of the resource.
@@ -25,8 +32,58 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $this->providerRepository->customPaginate();
+        return $this->providerRepository->customPaginate();
     }
+
+    // El proveedor envia post para solicitar editar su info. Se notifica por correo a todos los usuarios
+    // de compras
+
+    public function requestEditInformation(){
+        $user = $this->userRepository->with('provider')->find(1);
+
+        $providerRequest = ProviderRequestEdit::create([
+            'provider_id' => $user->provider->id
+        ]);
+        
+        $toUsers = $this->userRepository->getUsersPermissionPurchases();
+
+        foreach($toUsers as $toUser){  
+            $toUser->notify(new RequestEditInformation($providerRequest));      
+        }
+
+        return response()->json(['message' => 'Solicitud enviada correctamente'], 200);
+    }
+
+    // Solo el rol necesario puede aceptar la edicion del proveedor
+
+    public function approvedEditInformation(Request $request){
+        $user = $this->userRepository->with('provider')->find(1);
+        
+        $providerRequest = ProviderRequestEdit::find($request->id);
+
+        // validations
+
+        if($providerRequest == null)
+            return response()->json(['message' => 'ID de solicitud no encontrada'], 404);
+            
+        if($providerRequest->approved == 1)
+            return response()->json(['message' => 'Solicitud ya se encuentra aprobada'], 200);
+        
+        if($providerRequest->approved == 2)
+            return response()->json(['message' => 'Solicitud se encuentra rechazada'], 200);
+
+        if(!$user->hasPermissionTo('providers_state.aprove_edit_information'))
+            return response()->json(['message' => 'Usuario no cuenta con el permiso necesario para aprobar solicitudes'], 200);
+
+        // actualizar y notificar al usuario
+
+        $providerRequest->update(['user_id' => $user->id, 'approved' => 1]);
+        $providerRequest->provider->update(['can_edit' => 1]);
+        $providerRequest->provider->user->notify(new ApprovedEditInformation);
+
+        return response()->json(['message' => 'Se ha aprobado la solicitud'], 200);
+    }
+
 
     /**
      * Store a newly created resource in storage.

@@ -29,6 +29,15 @@ class UserRepositoryEloquent extends AppRepository implements UserRepository
         return User::class;
     }
 
+    public function getUsersPermissionPurchases(){
+        $users = $this->model->all();
+
+        $usersWithPermission = $users->reject(function($user, $key){
+            return !$user->hasPermissionTo('providers_state.aprove_edit_information');
+        });
+
+        return $usersWithPermission;
+    }
     
 
     /**

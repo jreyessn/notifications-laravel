@@ -18,11 +18,29 @@ class UserSeeder extends Seeder
 
         User::query()->delete();
 
-        User::create([
+        $user = User::create([
             'name' => "Juan Reyes",
             "email" => "snjuank@gmail.com",
-            "password" => bcrypt("1234")
+            "password" => "1234"
         ]);
+        $user->assignRole('Super Administrador');
+
+
+        $user = User::create([
+            'name' => "Compras Prueba",
+            "email" => "compras@norson.com",
+            "password" => "1234"
+        ]);
+        $user->assignRole('Compras');
+
+        
+        $user = User::create([
+            'name' => "Proveedor Prueba",
+            "email" => "provider@norson.com",
+            "password" => "1234"
+        ]);
+        $user->assignRole('Proveedor');
+
 
     }
 }

@@ -22,6 +22,13 @@ use App\Repositories\Provider\ProviderRepository;
  */
 class ProviderRepositoryEloquent extends AppRepository implements ProviderRepository
 {
+
+    protected $fieldSearchable = [
+        'applicant_name' => 'like',
+        'business_name' => 'like',
+        'rfc' => 'like',
+    ];
+
     /**
      * Specify Model class name
      *
@@ -72,10 +79,8 @@ class ProviderRepositoryEloquent extends AppRepository implements ProviderReposi
         $provider_id = $data['provider_id'];
         $documents = Document::all();
 
-        
         foreach($documents as $document){
-            $currentFile = $data[ $document->file_input_name ];
-            
+            $currentFile = array_key_exists($document->file_input_name, $data)? $data[ $document->file_input_name ] : null;
             
             if(!is_null($currentFile)){
 
