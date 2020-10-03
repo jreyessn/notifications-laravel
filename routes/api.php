@@ -14,42 +14,70 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Auth
+
+Route::group([
+    'prefix' => 'auth',
+    'namespace' => 'Auth',
+], function () {
+    Route::post('login', 'LoginController@login');
+
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('logout', 'LoginController@logout');
+        Route::get('user', 'LoginController@user');
+    });
 });
 
-Route::apiResource('files', 'FileController');
+// Password
 
-Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');
-Route::post('providers/approved_edit_information', 'ProviderController@approvedEditInformation');
-Route::apiResource('providers', 'ProviderController');
+Route::group([
+    'namespace' => 'Auth',
+    'middleware' => 'api',
+    'prefix' => 'password'
+], function () {
+    Route::post('create_token', 'ResetPasswordController@create');
+    Route::post('reset', 'ResetPasswordController@reset');
+    Route::get('find/{token}', 'ResetPasswordController@find');
+});
 
-// Métodos no tienen crud, solo list
+Route::group(['middleware' => 'auth:api'], function(){
 
-Route::get('business_types', 'BusinessTypeController');
-Route::get('accounts_group', 'AccountsGroupController');
-Route::get('bank', 'BankController');
-Route::get('bank_country', 'BankCountryController');
-Route::get('currency', 'CurrencyController');
-Route::get('document', 'DocumentController');
-Route::get('fixed_asset', 'FixedAssetController');
-Route::get('freight_transport', 'FreightTransportController');
-Route::get('fuel', 'FuelController');
-Route::get('intercompany', 'IntercompanyController');
-Route::get('lease', 'LeaseController');
-Route::get('maintenance', 'MaintenanceController');
-Route::get('officials_employee', 'OfficialsEmployeeController');
-Route::get('organization', 'OrganizationController');
-Route::get('payment_condition', 'PaymentConditionController');
-Route::get('payment_method', 'PaymentMethodController');
-Route::get('professional_service', 'ProfessionalServiceController');
-Route::get('raw_another_material', 'RawAnotherMaterialController');
-Route::get('raw_material', 'RawMaterialController');
-Route::get('raw_meat_material', 'RawMeatMaterialController');
-Route::get('retention_country', 'RetentionCountryController');
-Route::get('retention_type', 'RetentionTypeController');
-Route::get('service', 'ServiceController');
-Route::get('society', 'SocietyController');
-Route::get('taxes_duties_accesory', 'TaxesDutiesAccesoryController');
-Route::get('tolerance_group', 'ToleranceGroupController');
-Route::get('treatment', 'TreatmentController');
+    Route::apiResource('files', 'FileController');
+    
+    Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');
+    Route::post('providers/approved_edit_information', 'ProviderController@approvedEditInformation');
+    Route::apiResource('providers', 'ProviderController');
+    
+    // Métodos no tienen crud, solo list
+    
+    Route::get('business_types', 'BusinessTypeController');
+    Route::get('accounts_group', 'AccountsGroupController');
+    Route::get('bank', 'BankController');
+    Route::get('bank_country', 'BankCountryController');
+    Route::get('currency', 'CurrencyController');
+    Route::get('document', 'DocumentController');
+    Route::get('fixed_asset', 'FixedAssetController');
+    Route::get('freight_transport', 'FreightTransportController');
+    Route::get('fuel', 'FuelController');
+    Route::get('intercompany', 'IntercompanyController');
+    Route::get('lease', 'LeaseController');
+    Route::get('maintenance', 'MaintenanceController');
+    Route::get('officials_employee', 'OfficialsEmployeeController');
+    Route::get('organization', 'OrganizationController');
+    Route::get('payment_condition', 'PaymentConditionController');
+    Route::get('payment_method', 'PaymentMethodController');
+    Route::get('professional_service', 'ProfessionalServiceController');
+    Route::get('raw_another_material', 'RawAnotherMaterialController');
+    Route::get('raw_material', 'RawMaterialController');
+    Route::get('raw_meat_material', 'RawMeatMaterialController');
+    Route::get('retention_country', 'RetentionCountryController');
+    Route::get('retention_type', 'RetentionTypeController');
+    Route::get('service', 'ServiceController');
+    Route::get('society', 'SocietyController');
+    Route::get('taxes_duties_accesory', 'TaxesDutiesAccesoryController');
+    Route::get('tolerance_group', 'ToleranceGroupController');
+    Route::get('treatment', 'TreatmentController');
+
+});

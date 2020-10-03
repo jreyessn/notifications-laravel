@@ -14,3 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::get('/', 'Controller');
+
+Route::get('/', function () {
+    return "Laravel 8";
+});

@@ -41,7 +41,9 @@ class ProviderRepositoryEloquent extends AppRepository implements ProviderReposi
 
     public function save($data){
         
-        $data['user_id'] = 1;
+        $data['user_id'] = request()->user()->id;
+
+        // dd();
 
         $store = $this->create($data);
         

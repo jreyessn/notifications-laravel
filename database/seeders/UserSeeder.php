@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
 
         $user = User::create([
             'name' => "Juan Reyes",
+            'username' => "Dev",
             "email" => "snjuank@gmail.com",
             "password" => "1234"
         ]);
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
 
         $user = User::create([
             'name' => "Compras Prueba",
+            'username' => "Compras",
             "email" => "compras@norson.com",
             "password" => "1234"
         ]);
@@ -36,6 +38,7 @@ class UserSeeder extends Seeder
         
         $user = User::create([
             'name' => "Proveedor Prueba",
+            'username' => "Proveedor",
             "email" => "provider@norson.com",
             "password" => "1234"
         ]);

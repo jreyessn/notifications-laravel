@@ -38,7 +38,10 @@ class ProviderController extends Controller
     // El proveedor envia post para solicitar editar su info. Se notifica por correo a todos los usuarios
     // de compras
 
-    public function requestEditInformation(){
+    public function requestEditInformation(Request $request){
+
+        $request->validate(['url' => 'required|string']);
+
         $user = $this->userRepository->with('provider')->find(1);
 
         $providerRequest = ProviderRequestEdit::create([
@@ -48,7 +51,7 @@ class ProviderController extends Controller
         $toUsers = $this->userRepository->getUsersPermissionPurchases();
 
         foreach($toUsers as $toUser){  
-            $toUser->notify(new RequestEditInformation($providerRequest));      
+            $toUser->notify(new RequestEditInformation($providerRequest, $request->url));      
         }
 
         return response()->json(['message' => 'Solicitud enviada correctamente'], 200);
@@ -57,7 +60,7 @@ class ProviderController extends Controller
     // Solo el rol necesario puede aceptar la edicion del proveedor
 
     public function approvedEditInformation(Request $request){
-        $user = $this->userRepository->with('provider')->find(1);
+        $user = $request->user();
         
         $providerRequest = ProviderRequestEdit::find($request->id);
 

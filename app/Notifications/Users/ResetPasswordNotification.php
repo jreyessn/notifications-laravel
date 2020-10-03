@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Users;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class RequestEditInformation extends Notification
+class ResetPasswordNotification extends ResetPassword
 {
     use Queueable;
 
-    public $data;
-
-    public $url;
-
-    public $routeRedirect = 'aprroved_edit';
-
+    public $token;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($data, $url = '')
+    public function __construct( $token )
     {
-        $this->data = $data;
-        $this->url = $url;
+        $this->token = $token;
+
     }
 
     /**
@@ -47,14 +43,16 @@ class RequestEditInformation extends Notification
      */
     public function toMail($notifiable)
     {
+
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!')
-                    ->view('mails.requestEditInformation', [
-                        'data' => $this->data,
-                        'url' => $this->url.$this->routeRedirect
-                    ]);
+            ->subject('Recuperar contraseña')
+            ->greeting('Hola, '.$notifiable->first_name.' '.$notifiable->last_name)
+            ->line('Estás recibiendo este email porque se ha solicitado un cambio de contraseña para tu cuenta.')
+            ->action('Recuperar contraseña', route('password.reset', [$this->token]))
+            ->line('Si no has solicitado un cambio de contraseña, puedes ignorar o eliminar este e-mail.')
+            ->salutation('Saludos,')
+            ->salutation(config('app_name'));
     }
 
     /**

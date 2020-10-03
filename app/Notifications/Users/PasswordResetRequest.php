@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Users;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
+use Illuminate\Http\Request;
 
-class RequestEditInformation extends Notification
+class PasswordResetRequest extends Notification implements ShouldQueue
 {
     use Queueable;
+    protected $token;
 
-    public $data;
-
-    public $url;
-
-    public $routeRedirect = 'aprroved_edit';
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($data, $url = '')
+    public function __construct( $token )
     {
-        $this->data = $data;
-        $this->url = $url;
+        $this->token = $token;
     }
 
     /**
@@ -47,14 +43,18 @@ class RequestEditInformation extends Notification
      */
     public function toMail($notifiable)
     {
+
+        $url = request()->url .$this->token;
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!')
-                    ->view('mails.requestEditInformation', [
-                        'data' => $this->data,
-                        'url' => $this->url.$this->routeRedirect
-                    ]);
+            ->subject('Recuperar contraseña')
+            ->greeting('Hola, '.$notifiable->first_name.' '.$notifiable->last_name)
+            ->line('Estás recibiendo este email porque se ha solicitado un cambio de contraseña para tu cuenta.')
+            ->action('Recuperar contraseña', $url)
+            ->line('Si no has solicitado un cambio de contraseña, puedes ignorar o eliminar este e-mail.')
+            ->salutation('Saludos,')
+            ->salutation(env('APP_NAME'));
+
     }
 
     /**
