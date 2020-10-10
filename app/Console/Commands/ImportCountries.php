@@ -40,6 +40,12 @@ class ImportCountries extends Command
     {
         DB::unprepared(file_get_contents("database/countries-dumps/countries.sql"));
         DB::unprepared(file_get_contents("database/countries-dumps/states.sql"));
+        /* 
+        * Aumentar la memoria de Mysql en My.cnf
+        * 
+        * set global net_buffer_length=1000000; 
+        * set global max_allowed_packet=1000000000;
+        */
         DB::unprepared(file_get_contents("database/countries-dumps/cities.sql"));
     }
 }

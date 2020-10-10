@@ -35,8 +35,8 @@ class CreateProvidersTable extends Migration
             $table->string("email_quotation")->nullable();
             $table->string("email_purchase_orders")->nullable();
             $table->string("website")->nullable();
-            $table->boolean("retention")->default(0);
-            $table->unsignedInteger("retention_country_id")->nullable();
+            $table->boolean("retention")->default(0)->comment("1 si, 0 no");
+            $table->string("retention_country", 50)->nullable();
             $table->boolean("contracted")->default(0)->comment("1 contratado, 2 rechazado, 0 en espera");
             $table->text("note")->nullable();
             $table->boolean('can_edit')->default(0);

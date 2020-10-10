@@ -87,7 +87,7 @@ class LoginController extends Controller
         }
 
         $token->save();
-        $user = $request->user()->load('roles.permissions');
+        $user = $request->user()->load('roles.permissions', 'provider');
 
         $expires_at = Carbon::parse($tokenResult->token->expires_at)->toDateTimeString();
 
@@ -103,7 +103,7 @@ class LoginController extends Controller
 
     public function user(Request $request)
     {
-        return response()->json($request->user()->load('roles.permissions'));
+        return response()->json($request->user()->load('roles.permissions', 'provider'));
     }
 
     public function logout(Request $request)

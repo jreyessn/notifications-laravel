@@ -32,7 +32,7 @@ class Provider extends Model
         "email_purchase_orders", 
         "website",
         "retention",
-        "retention_country_id", 
+        "retention_country", 
         "contracted",
         "can_edit",
         "note",

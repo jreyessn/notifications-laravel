@@ -25,7 +25,7 @@ Route::group([
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
-        Route::post('logout', 'LoginController@logout');
+        Route::get('logout', 'LoginController@logout');
         Route::get('user', 'LoginController@user');
     });
 });
@@ -73,11 +73,16 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('raw_material', 'RawMaterialController');
     Route::get('raw_meat_material', 'RawMeatMaterialController');
     Route::get('retention_country', 'RetentionCountryController');
+    Route::get('retention_indicator', 'RetentionIndicatorController');
     Route::get('retention_type', 'RetentionTypeController');
     Route::get('service', 'ServiceController');
     Route::get('society', 'SocietyController');
     Route::get('taxes_duties_accesory', 'TaxesDutiesAccesoryController');
     Route::get('tolerance_group', 'ToleranceGroupController');
     Route::get('treatment', 'TreatmentController');
+
+    Route::get('countries', 'CountriesController@getCountries');
+    Route::get('states', 'CountriesController@getStates');
+    Route::get('cities', 'CountriesController@getCities');
 
 });

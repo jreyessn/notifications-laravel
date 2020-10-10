@@ -47,6 +47,7 @@ class ProviderStoreRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'applicant_name' => 'required',
             'business_name' => 'required',
@@ -67,11 +68,12 @@ class ProviderStoreRequest extends FormRequest
             'email_quotation' => 'required',
             'email_purchase_orders' => 'required',
             'website' => 'required',
+            
             'retention' => 'required',
             'retention' => 'required',
 
-            'retention_type_id' => 'array',
-            'retention_indicator_id' => 'array',
+            'retention_type_id' => 'array|nullable',
+            'retention_indicator_id' => 'array|nullable',
 
             "account_holder" => "required",
             "account_number" => "required",
@@ -85,34 +87,34 @@ class ProviderStoreRequest extends FormRequest
             'reference_phone' => 'array',
             'reference_email' => 'array',
 
-            'acta_constitutiva_file' => 'file|nullable',
+            'acta_constitutiva_file' => 'file|mimes:pdf|nullable',
             'acta_constitutiva_date' => 'date|nullable',
 
-            'constancia_situacion_fiscal_file' => 'file|nullable',
+            'constancia_situacion_fiscal_file' => 'file|mimes:pdf|nullable',
             'constancia_situacion_fiscal_date' => ['nullable', new ValidDateDocument],
 
-            'copia_identificacion_file' => 'file|nullable',
+            'copia_identificacion_file' => 'file|mimes:pdf|nullable',
             'copia_identificacion_date' => 'date|nullable',
 
-            'formato_32d_file' => 'file|nullable',
+            'formato_32d_file' => 'file|mimes:pdf|nullable',
             'formato_32d_date' => ['nullable', new ValidDateDocument],
 
-            'estado_cuenta_file' => 'file|nullable',
+            'estado_cuenta_file' => 'file|mimes:pdf|nullable',
             'estado_cuenta_date' => ['nullable', new ValidDateDocument],
 
-            'comprobante_domicilio_file' => 'file|nullable',
+            'comprobante_domicilio_file' => 'file|mimes:pdf|nullable',
             'comprobante_domicilio_date' => ['nullable', new ValidDateDocument],
 
-            'imss_file' => 'file|nullable',
+            'imss_file' => 'file|mimes:pdf|nullable',
             'imss_date' => 'date|nullable',
 
-            'rfc_file' => 'file|nullable',
+            'rfc_file' => 'file|mimes:pdf|nullable',
             'rfc_date' => 'date|nullable',
 
-            'owner_file' => 'file|nullable',
+            'owner_file' => 'file|mimes:pdf|nullable',
             'owner_date' => 'date|nullable',
 
-            'account_routing_file' => 'file|nullable',
+            'account_routing_file' => 'file|mimes:pdf|nullable',
             'account_routing_date' => 'date|nullable',
         ];
     }
@@ -141,6 +143,7 @@ class ProviderStoreRequest extends FormRequest
     {
         return [
             'required' => 'El campo :attribute es obligatorio',
+            'mimes' => "Solo se permiten archivos PDF"
         ];
     }
 
