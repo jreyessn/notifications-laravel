@@ -52,6 +52,9 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'users.create']);
         Permission::create(['name' => 'users.destroy']);
 
+        $superadmin = Role::create(['name' => 'Super Administrador']);
+        $superadmin->givePermissionTo(Permission::all());
+        
         //Admin
         $compras = Role::create(['name' => 'Compras']);
 
@@ -63,10 +66,6 @@ class PermissionsTableSeeder extends Seeder
             'providers_state.aprove_edit_information',
             'providers_state.form_sap',
         ]);
-
-        $superadmin = Role::create(['name' => 'Super Administrador']);
-        $superadmin->givePermissionTo(Permission::all());
-       
         //Guest
         $proveedor = Role::create(['name' => 'Proveedor']);
 

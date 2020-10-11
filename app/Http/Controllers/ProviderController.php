@@ -11,7 +11,9 @@ use App\Notifications\RequestEditInformation;
 use App\Notifications\ApprovedEditInformation;
 use App\Repositories\Users\UserRepositoryEloquent;
 use App\Http\Requests\Provider\ProviderStoreRequest;
+use App\Models\Provider\ProviderDocument;
 use App\Repositories\Provider\ProviderRepositoryEloquent;
+use Illuminate\Support\Facades\Storage;
 
 class ProviderController extends Controller
 {
@@ -32,32 +34,39 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        return $this->providerRepository->customPaginate();
+        return $this->providerRepository->list();
     }
 
-    // El proveedor envia post para solicitar editar su info. Se notifica por correo a todos los usuarios
-    // de compras
+    /**
+     * El proveedor envia post para solicitar editar su info. Se notifica por correo a todos los usuarios
+     * de compras
+     */
 
     public function requestEditInformation(Request $request){
 
-        $request->validate(['url' => 'required|string']);
+        $requestSends = ProviderRequestEdit::where('provider_id', $request->id)->get()->count(); 
+    
+        // limite de solicitudes 
 
-        $user = $this->userRepository->with('provider')->find(1);
+        if($requestSends == 2)
+            return response()->json(['message' => 'Ya tiene dos solicitudes pendientes', 'status' => false], 200);
 
         $providerRequest = ProviderRequestEdit::create([
-            'provider_id' => $user->provider->id
+            'provider_id' => $request->id
         ]);
         
         $toUsers = $this->userRepository->getUsersPermissionPurchases();
 
         foreach($toUsers as $toUser){  
-            $toUser->notify(new RequestEditInformation($providerRequest, $request->url));      
+            $toUser->notify(new RequestEditInformation($providerRequest));      
         }
 
-        return response()->json(['message' => 'Solicitud enviada correctamente'], 200);
+        return response()->json(['message' => 'Solicitud enviada correctamente', 'status' => true], 200);
     }
 
-    // Solo el rol necesario puede aceptar la edicion del proveedor
+    /* 
+     * Solo el rol necesario puede aceptar la edicion del proveedor
+    */
 
     public function approvedEditInformation(Request $request){
         $user = $request->user();
@@ -80,13 +89,29 @@ class ProviderController extends Controller
 
         // actualizar y notificar al usuario
 
-        $providerRequest->update(['user_id' => $user->id, 'approved' => 1]);
         $providerRequest->provider->update(['can_edit' => 1]);
+
+        ProviderRequestEdit::where('provider_id', $providerRequest->provider_id)
+                            ->update(['user_id' => $user->id, 'approved' => 1]);
+
+
         $providerRequest->provider->user->notify(new ApprovedEditInformation);
 
         return response()->json(['message' => 'Se ha aprobado la solicitud'], 200);
     }
 
+    /** 
+     * Mostrar los detalles del documento del proveedor
+    */
+
+    public function showDocument(Request $request, $id, $download = null){
+
+        $provider = ProviderDocument::with('provider')->find($id);
+        
+        if(!$download)
+            return $provider;
+        return Storage::disk('local')->download( $provider->document->folder.'/'.$provider->name, $provider->name);
+    }
 
     /**
      * Store a newly created resource in storage.

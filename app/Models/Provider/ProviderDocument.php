@@ -19,8 +19,18 @@ class ProviderDocument extends Model
         'note',
     ];
 
+    protected $with = ['document'];
+
+    protected $appends = ['approved_text'];
+
+    private $status = ['En espera', 'Aprobado', 'Rechazado'];
+
+    public function getApprovedTextAttribute(){
+        return $this->status[$this->approved];
+    }
+    
     public function document(){
-        return $this->hasOne('App\Models\Document');
+        return $this->belongsTo('App\Models\Document');
     }
 
     public function provider(){

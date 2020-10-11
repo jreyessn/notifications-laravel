@@ -32,7 +32,7 @@ abstract class AppRepository extends BaseRepository
     */
     public function customPaginate()
     {
-        $perPage = (int) $this->request->get('perPage', config('repository.pagination.limit', 15));
+        $perPage = (int) $this->request->get('perPage', config('repository.pagination.limit', 10));
 
         return $this->paginate($perPage);
     }

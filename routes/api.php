@@ -43,11 +43,12 @@ Route::group([
 });
 
 Route::group(['middleware' => 'auth:api'], function(){
-
+    
     Route::apiResource('files', 'FileController');
     
     Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');
     Route::post('providers/approved_edit_information', 'ProviderController@approvedEditInformation');
+    Route::get('providers/document/{id}/{download?}', 'ProviderController@showDocument');
     Route::apiResource('providers', 'ProviderController');
     
     // Métodos no tienen crud, solo list

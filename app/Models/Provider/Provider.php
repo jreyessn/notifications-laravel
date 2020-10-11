@@ -39,6 +39,11 @@ class Provider extends Model
         "user_id"
     ];
 
+    protected $casts = [
+        'can_edit' => 'boolean',
+        'contracted' => 'boolean',
+    ];
+
     public function account_bank(){
         return $this->hasOne('App\Models\Provider\ProviderAccountBank');
     }
@@ -58,4 +63,5 @@ class Provider extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+
 }

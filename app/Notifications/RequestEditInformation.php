@@ -13,19 +13,14 @@ class RequestEditInformation extends Notification
 
     public $data;
 
-    public $url;
-
-    public $routeRedirect = 'aprroved_edit';
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($data, $url = '')
+    public function __construct($data)
     {
         $this->data = $data;
-        $this->url = $url;
     }
 
     /**
@@ -47,14 +42,13 @@ class RequestEditInformation extends Notification
      */
     public function toMail($notifiable)
     {
+        $aproved_edit = request()->aproved_edit;
+        $reject_edit = request()->reject_edit;
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!')
-                    ->view('mails.requestEditInformation', [
-                        'data' => $this->data,
-                        'url' => $this->url.$this->routeRedirect
-                    ]);
+                    ->line("El proveedor {$this->data->provider->applicant_name} ha solicitado modificar su información.")
+                    ->action('Aceptar', $aproved_edit.$this->data->provider->id);
+                    // ->line("<a class='btn btn-danger' href='{$reject_edit}{$this->data->provider->id}'>Rechazar</a>");
     }
 
     /**

@@ -39,6 +39,15 @@ class ProviderRepositoryEloquent extends AppRepository implements ProviderReposi
         return Provider::class;
     }
 
+    public function list(){
+        
+        $this->when(current_role('id') == 2, function($query){
+            $query->where('user_id', request()->user()->id);
+        });
+
+        return $this->customPaginate();
+    }
+
     public function save($data){
         
         $data['user_id'] = request()->user()->id;

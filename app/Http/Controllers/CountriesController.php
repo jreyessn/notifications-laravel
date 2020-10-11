@@ -14,6 +14,7 @@ class CountriesController extends Controller
     private $repositoryCountry;
     private $repositoryState;
     private $repositoryCity;
+    private $perPage = 10;
 
     function __construct(
         CountryRepositoryEloquent $repositoryCountry,
@@ -23,6 +24,9 @@ class CountriesController extends Controller
         $this->repositoryCountry = $repositoryCountry;
         $this->repositoryState = $repositoryState;
         $this->repositoryCity = $repositoryCity;
+
+        $this->perPage = (int) request()->get('perPage', config('repository.pagination.limit', 10));
+
     }
     /**
      * Handle the incoming request.
@@ -32,20 +36,21 @@ class CountriesController extends Controller
      */
     public function getCountries()
     {
-        return $this->repositoryCountry->paginate();
+        
+        return $this->repositoryCountry->paginate($this->perPage);
     }
 
     public function getStates()
     {
         $this->repositoryState->pushCriteria(app(CountriesCriteria::class));
         
-        return $this->repositoryState->paginate();
+        return $this->repositoryState->paginate($this->perPage);
     }
     
     public function getCities()
     {
         $this->repositoryCity->pushCriteria(app(CountriesCriteria::class));
 
-        return $this->repositoryCity->paginate();
+        return $this->repositoryCity->paginate($this->perPage);
     }
 }

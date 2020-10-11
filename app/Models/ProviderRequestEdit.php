@@ -16,8 +16,6 @@ class ProviderRequestEdit extends Model
         'approved'
     ];
 
-    protected $with = ['provider'];
-
     public function provider(){
         return $this->belongsTo('App\Models\Provider\Provider');
     }
