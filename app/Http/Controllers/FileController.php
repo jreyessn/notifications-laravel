@@ -76,6 +76,15 @@ class FileController extends Controller
         return $this->fileRepository->find($id); 
     }
 
+    public function showTerminos($download = null){
+        $term = $this->fileRepository->where(['type' => 'terminos'])->first();
+
+        if(!$download)
+            return $term;
+        return Storage::disk('local')->download('terminos/'.$term->name, $term->name);
+
+    }
+
     /**
      * Update the specified resource in storage.
      *

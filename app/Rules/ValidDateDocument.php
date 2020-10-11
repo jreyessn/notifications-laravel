@@ -29,7 +29,7 @@ class ValidDateDocument implements Rule
         $date = new Carbon($value);
         $now = Carbon::now();
 
-        if($date->diffInMonths($now) > 3)
+        if($date->diffInMonths($now) == 0)
             return false;
         return true;
  

@@ -1,6 +1,9 @@
 #!/usr/bin/env php
 <?php
 
+echo ini_set('post_max_size', '30M');
+echo ini_set('upload_max_filesize', '30M'); 
+
 define('LARAVEL_START', microtime(true));
 
 /*

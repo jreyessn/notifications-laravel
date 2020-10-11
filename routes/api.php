@@ -44,6 +44,8 @@ Route::group([
 
 Route::group(['middleware' => 'auth:api'], function(){
     
+    Route::get('files/terminos', 'FileController@showTerminos');
+    Route::get('files/terminos/{download?}', 'FileController@showTerminos');
     Route::apiResource('files', 'FileController');
     
     Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');
@@ -58,7 +60,10 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('bank', 'BankController');
     Route::get('bank_country', 'BankCountryController');
     Route::get('currency', 'CurrencyController');
-    Route::get('document', 'DocumentController');
+
+    Route::get('document', 'DocumentController@index');
+    Route::get('document/{id}/{download?}', 'DocumentController@show');
+
     Route::get('fixed_asset', 'FixedAssetController');
     Route::get('freight_transport', 'FreightTransportController');
     Route::get('fuel', 'FuelController');

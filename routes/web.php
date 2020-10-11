@@ -16,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', 'Controller');
 
 Route::get('/', function () {
-    return "Laravel 8";
+   echo ini_get('post_max_size');
+   return view('welcome');
 });

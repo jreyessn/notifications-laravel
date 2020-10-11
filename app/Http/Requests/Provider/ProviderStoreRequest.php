@@ -22,21 +22,21 @@ class ProviderStoreRequest extends FormRequest
 
     protected function prepareForValidation() 
     {
-        if(!is_null($this->constancia_situacion_fiscal_file)){
-            $this->merge(['constancia_situacion_fiscal_date' => $this->captureDate($this->constancia_situacion_fiscal_file)]);
-        }
+        // if(!is_null($this->constancia_situacion_fiscal_file)){
+        //     $this->merge(['constancia_situacion_fiscal_date' => $this->captureDate($this->constancia_situacion_fiscal_file)]);
+        // }
         
-        if(!is_null($this->estado_cuenta_file)){
-            $this->merge(['estado_cuenta_date' => $this->captureDate($this->estado_cuenta_file)]);
-        }
+        // if(!is_null($this->estado_cuenta_file)){
+        //     $this->merge(['estado_cuenta_date' => $this->captureDate($this->estado_cuenta_file)]);
+        // }
         
         if(!is_null($this->formato_32d_file)){
             $this->merge(['formato_32d_date' => $this->captureDate($this->formato_32d_file)]);
         }
         
-        if(!is_null($this->comprobante_domicilio_file)){
-            $this->merge(['comprobante_domicilio_date' => $this->captureDate($this->comprobante_domicilio_file)]);
-        }
+        // if(!is_null($this->comprobante_domicilio_file)){
+        //     $this->merge(['comprobante_domicilio_date' => $this->captureDate($this->comprobante_domicilio_file)]);
+        // }
     } 
     
 
@@ -91,7 +91,7 @@ class ProviderStoreRequest extends FormRequest
             'acta_constitutiva_date' => 'date|nullable',
 
             'constancia_situacion_fiscal_file' => 'file|mimes:pdf|nullable',
-            'constancia_situacion_fiscal_date' => ['nullable', new ValidDateDocument],
+            'constancia_situacion_fiscal_date' => ['nullable', ],
 
             'copia_identificacion_file' => 'file|mimes:pdf|nullable',
             'copia_identificacion_date' => 'date|nullable',
@@ -100,10 +100,10 @@ class ProviderStoreRequest extends FormRequest
             'formato_32d_date' => ['nullable', new ValidDateDocument],
 
             'estado_cuenta_file' => 'file|mimes:pdf|nullable',
-            'estado_cuenta_date' => ['nullable', new ValidDateDocument],
+            'estado_cuenta_date' => ['nullable', ],
 
             'comprobante_domicilio_file' => 'file|mimes:pdf|nullable',
-            'comprobante_domicilio_date' => ['nullable', new ValidDateDocument],
+            'comprobante_domicilio_date' => ['nullable', ],
 
             'imss_file' => 'file|mimes:pdf|nullable',
             'imss_date' => 'date|nullable',
@@ -119,6 +119,9 @@ class ProviderStoreRequest extends FormRequest
         ];
     }
 
+    /* 
+        Captura la fecha del documento (solo funciona con 32D)
+    */
     private function captureDate($value){
 
         try {
@@ -128,14 +131,34 @@ class ProviderStoreRequest extends FormRequest
             $pdf = $parser->parseFile($value->getPathname());
             $content = preg_replace('/\s+/', ' ', trim($pdf->getText()));
             
-            preg_match('/ Fecha: (.*?) /', $content, $dateMatches);
-            
-            $dateFormated = Carbon::createFromFormat('d/m/Y', $dateMatches[1])->format('Y-m-d');
+            preg_match('/día(.*?),/', $content, $dateMatches);
 
-            return $dateFormated;
+            if(count($dateMatches) == 2){
+                $palabras = preg_split('/\s/', trim($dateMatches[1]), null, PREG_SPLIT_OFFSET_CAPTURE);
+                
+                $dateTransform = array();
+
+                foreach($palabras as $palabraArray){
+                    if($palabraArray[0] != "de")
+                        array_push($dateTransform, $palabraArray[0]);
+                }
+
+                $month = month_en($dateTransform[1]);
+
+                if(!$month)
+                    return null;
+
+                $dateTransform[1] = $month;
+                
+                $dateFormated = Carbon::parse(Carbon::parse($dateTransform[0].' '.$dateTransform[1].' '.$dateTransform[2]))->format('Y-m-d');
+                
+                return $dateFormated;
+            }
+
+            return null;
 
         } catch (Exception $th) {
-            return false;
+            return null;
         }
     }
 
