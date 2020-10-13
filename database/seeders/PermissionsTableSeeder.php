@@ -75,8 +75,6 @@ class PermissionsTableSeeder extends Seeder
             'providers_state.request_edit_information',
             'requirements.index',
             'requirements.show',
-            'guides.index',
-            'guides.show',
         ]);
         
     }

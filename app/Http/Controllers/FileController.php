@@ -71,9 +71,13 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $download = null)
     {
-        return $this->fileRepository->find($id); 
+        $file = $this->fileRepository->find($id);
+
+        if(!$download)
+            return $file;
+        return Storage::disk('local')->download('guides/'.$file->name, $file->name);
     }
 
     public function showTerminos($download = null){

@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     Route::get('files/terminos', 'FileController@showTerminos');
     Route::get('files/terminos/{download?}', 'FileController@showTerminos');
+    Route::get('files/{id}/{download?}', 'FileController@show');
     Route::apiResource('files', 'FileController');
     
     Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');

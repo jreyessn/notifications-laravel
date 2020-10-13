@@ -18,6 +18,7 @@ class CreateFilesTable extends Migration
             $table->string("type", 30)
                   ->comment("Se define si es requisito, guia, terminos, etc");
             $table->string("title", 100);
+            $table->text("description");
             $table->string("name");
             $table->timestamps();
             $table->softDeletes();

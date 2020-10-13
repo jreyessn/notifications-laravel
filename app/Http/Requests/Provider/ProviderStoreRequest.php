@@ -49,7 +49,7 @@ class ProviderStoreRequest extends FormRequest
     {
 
         return [
-            'applicant_name' => 'required',
+            'applicant_name' => '',
             'business_name' => 'required',
             'rfc' => 'required',
             'business_type_id' => 'required',
@@ -58,19 +58,18 @@ class ProviderStoreRequest extends FormRequest
             'street_address' => 'required',
             'colony' => 'required',
             'country_id' => 'required',
-            'state_id' => 'required',
-            'city_id' => 'required',
+            'state_id' => '',
+            'city_id' => '',
             'zip_code' => 'required',
             'phone' => 'required',
-            'main_shareholder' => 'required',
+            'main_shareholder' => '',
             'sales_representative' => 'required',
             'sales_phone' => 'required',
             'email_quotation' => 'required',
             'email_purchase_orders' => 'required',
             'website' => 'required',
             
-            'retention' => 'required',
-            'retention' => 'required',
+            'retention' => '',
 
             'retention_type_id' => 'array|nullable',
             'retention_indicator_id' => 'array|nullable',
@@ -117,6 +116,7 @@ class ProviderStoreRequest extends FormRequest
             'account_routing_file' => 'file|mimes:pdf|nullable',
             'account_routing_date' => 'date|nullable',
         ];
+        
     }
 
     /* 

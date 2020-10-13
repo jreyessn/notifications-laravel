@@ -44,6 +44,10 @@ class Provider extends Model
         'contracted' => 'boolean',
     ];
 
+    public function setRetentionAttribute($value){
+        return is_null($value)? 0 : $value;
+    }
+
     public function account_bank(){
         return $this->hasOne('App\Models\Provider\ProviderAccountBank');
     }

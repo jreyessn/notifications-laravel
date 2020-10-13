@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         // Schema::disableForeignKeyConstraints();
 
-        \App\Models\File::factory(10)->create();
-
         $this->call([
             PermissionsTableSeeder::class,
             UserSeeder::class,
@@ -49,6 +47,7 @@ class DatabaseSeeder extends Seeder
             SocietiesSeeder::class,
             TaxesDutiesAccesoriesSeeder::class,
             ToleranceGroupsSeeder::class,
+            FileSeender::class,
             TreatmentsSeeder::class,
         ]);
 
