@@ -53,7 +53,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('providers/approved_edit_information', 'ProviderController@approvedEditInformation');
     Route::get('providers/document/{id}/{download?}', 'ProviderController@showDocument');
     Route::apiResource('providers', 'ProviderController');
-    
+    Route::apiResource('users','UserController');
+    Route::apiResource('roles','RoleController');
+
     // Métodos no tienen crud, solo list
     
     Route::get('business_types', 'BusinessTypeController');

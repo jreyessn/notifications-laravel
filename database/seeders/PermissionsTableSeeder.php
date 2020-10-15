@@ -18,64 +18,62 @@ class PermissionsTableSeeder extends Seeder
 
         //Permission list
 
-        Permission::create(['name' => 'providers.index']);
-        Permission::create(['name' => 'providers.edit']);
-        Permission::create(['name' => 'providers.show']);
-        Permission::create(['name' => 'providers.create']);
-        Permission::create(['name' => 'providers.destroy']);
-
-        Permission::create(['name' => 'providers_state.index']);
-        Permission::create(['name' => 'providers_state.create']);
-        Permission::create(['name' => 'providers_state.approve_document']);
-        Permission::create(['name' => 'providers_state.aprove_edit_information']); 
-        // este permiso recibe correos de las solicitudes
-
-        Permission::create(['name' => 'providers_state.request_edit_information']);
-        Permission::create(['name' => 'providers_state.contract']);
-        Permission::create(['name' => 'providers_state.form_sap']);
-
-        Permission::create(['name' => 'requirements.index']);
-        Permission::create(['name' => 'requirements.edit']);
-        Permission::create(['name' => 'requirements.show']);
-        Permission::create(['name' => 'requirements.create']);
-        Permission::create(['name' => 'requirements.destroy']);
-
-        Permission::create(['name' => 'guides.index']);
-        Permission::create(['name' => 'guides.edit']);
-        Permission::create(['name' => 'guides.show']);
-        Permission::create(['name' => 'guides.create']);
-        Permission::create(['name' => 'guides.destroy']);
-
-        Permission::create(['name' => 'users.index']);
-        Permission::create(['name' => 'users.edit']);
-        Permission::create(['name' => 'users.show']);
-        Permission::create(['name' => 'users.create']);
-        Permission::create(['name' => 'users.destroy']);
-
-        $superadmin = Role::create(['name' => 'Super Administrador']);
-        $superadmin->givePermissionTo(Permission::all());
+        Permission::create(['name' => 'dashboard']); // 1
+        Permission::create(['name' => 'list providers']);
+        Permission::create(['name' => 'edit providers']); // 3
+        Permission::create(['name' => 'show providers']);
+        Permission::create(['name' => 'create providers']); // 5
+        Permission::create(['name' => 'delete providers']); // 6
+        Permission::create(['name' => 'approve documents']);
+        Permission::create(['name' => 'approve edit providers']);
+        Permission::create(['name' => 'request edit providers']); // 9
+        Permission::create(['name' => 'contract providers']); // 10
+        Permission::create(['name' => 'sap providers']);
+        Permission::create(['name' => 'approve to sap']); //12
         
-        //Admin
-        $compras = Role::create(['name' => 'Compras']);
+        Permission::create(['name' => 'list requirements']);
+        Permission::create(['name' => 'edit requirements']);
+        Permission::create(['name' => 'show requirements']);
+        Permission::create(['name' => 'create requirements']);
+        Permission::create(['name' => 'delete requirements']);
 
-        $compras->givePermissionTo([
-            'providers.index',
-            'providers.show',
-            'providers_state.index',
-            'providers_state.approve_document',
-            'providers_state.aprove_edit_information',
-            'providers_state.form_sap',
-        ]);
-        //Guest
+        Permission::create(['name' => 'list guides']);
+        Permission::create(['name' => 'edit guides']);
+
+        Permission::create(['name' => 'list users']);
+        Permission::create(['name' => 'edit users']);
+        Permission::create(['name' => 'show users']);
+        Permission::create(['name' => 'create users']);
+        Permission::create(['name' => 'delete users']);
+
+        $superadmin = Role::create(['name' => 'Administrador']);
+        $superadmin->givePermissionTo(Permission::all()->except([9,5]));
+        
         $proveedor = Role::create(['name' => 'Proveedor']);
-
         $proveedor->givePermissionTo([
-            'providers_state.index',
-            'providers_state.create',
-            'providers_state.request_edit_information',
-            'requirements.index',
-            'requirements.show',
+            'list providers',
+            'edit providers',
+            'show providers',
+            'create providers',
+            'request edit providers',
+            'list requirements',
+            'show requirements',
         ]);
+
+        $compras = Role::create(['name' => 'Compras']);
+        $compras->givePermissionTo(Permission::all()->except([3,5,6,9,10,12]));
+
+        $legal = Role::create(['name' => 'Legal']);
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+
+        $legal = Role::create(['name' => 'Fiscal']);
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+        
+        $legal = Role::create(['name' => 'Tesorería']);
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+        
+        $legal = Role::create(['name' => 'Auditoría']);
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
         
     }
 }

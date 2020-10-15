@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -9,7 +11,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasRoles, Notifiable, HasApiTokens;
+    use HasRoles, Notifiable, HasApiTokens, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
+        'avatar',
+        'password_changed_at',
+        'phone'
     ];
 
     /**
@@ -41,6 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'created_at_format'
+    ];
 
     /**
      *
@@ -53,5 +62,9 @@ class User extends Authenticatable
 
     public function provider(){
         return $this->hasOne('App\Models\Provider\Provider');
+    }
+
+    public function getCreatedAtFormatAttribute(){
+        return Carbon::parse($this->created_at)->format('d/m/Y H:i');
     }
 }

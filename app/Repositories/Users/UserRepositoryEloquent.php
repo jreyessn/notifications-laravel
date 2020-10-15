@@ -4,7 +4,6 @@ namespace App\Repositories\Users;
 
 use App\Models\User;
 use App\Repositories\AppRepository;
-use App\Validators\Users\UserValidator;
 use App\Repositories\Users\UserRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 
@@ -16,7 +15,10 @@ use Prettus\Repository\Criteria\RequestCriteria;
 class UserRepositoryEloquent extends AppRepository implements UserRepository
 {
     protected $fieldSearchable = [
-        'description' => 'like',
+        // 'username' => 'like',
+        'name' => 'like',
+        'email' => 'like',
+        'roles.name' => 'like',
     ];
 
     /**
@@ -33,7 +35,7 @@ class UserRepositoryEloquent extends AppRepository implements UserRepository
         $users = $this->model->all();
 
         $usersWithPermission = $users->reject(function($user, $key){
-            return !$user->hasPermissionTo('providers_state.aprove_edit_information');
+            return !$user->hasPermissionTo('approve edit providers');
         });
 
         return $usersWithPermission;
@@ -47,5 +49,7 @@ class UserRepositoryEloquent extends AppRepository implements UserRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+
     
 }

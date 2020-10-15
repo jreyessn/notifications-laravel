@@ -84,7 +84,7 @@ class ProviderController extends Controller
         if($providerRequest->approved == 2)
             return response()->json(['message' => 'Solicitud se encuentra rechazada'], 200);
 
-        if(!$user->hasPermissionTo('providers_state.aprove_edit_information'))
+        if(!$user->hasPermissionTo('approve edit providers'))
             return response()->json(['message' => 'Usuario no cuenta con el permiso necesario para aprobar solicitudes'], 200);
 
         // actualizar y notificar al usuario

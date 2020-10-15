@@ -41,7 +41,7 @@ class ProviderRepositoryEloquent extends AppRepository implements ProviderReposi
 
     public function list(){
         
-        $this->when(current_role('id') == 3, function($query){
+        $this->when(current_role('id') == 2, function($query){
             $query->where('user_id', request()->user()->id);
         });
 

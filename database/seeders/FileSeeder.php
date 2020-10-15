@@ -35,6 +35,12 @@ class FileSeeder extends Seeder
                 "name" => "example.pdf",
                 "type" => "requisitos"
             ],
+            [
+                "title" => "Términos y Condiciones",
+                "description" => "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
+                "name" => "example.pdf",
+                "type" => "terminos"
+            ],
          
         ];
 
