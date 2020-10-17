@@ -44,10 +44,13 @@ class RequestEditInformation extends Notification
     {
         $aproved_edit = request()->aproved_edit;
         $reject_edit = request()->reject_edit;
+        $data = $this->data;
 
         return (new MailMessage)
-                    ->line("El proveedor {$this->data->provider->applicant_name} ha solicitado modificar su información.")
-                    ->action('Aceptar', $aproved_edit.$this->data->provider->id);
+                    // ->line("El proveedor {$this->data->provider->applicant_name} ha solicitado modificar su información.")
+                    ->action('Aceptar', $aproved_edit.$this->data->provider->id)
+                    ->view('mails.requestEditInformation', compact('aproved_edit', 'reject_edit', 'data'));
+
                     // ->line("<a class='btn btn-danger' href='{$reject_edit}{$this->data->provider->id}'>Rechazar</a>");
     }
 

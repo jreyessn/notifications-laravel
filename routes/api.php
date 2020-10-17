@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('files/terminos', 'FileController@showTerminos');
     Route::get('files/terminos/{download?}', 'FileController@showTerminos');
     Route::get('files/{id}/{download?}', 'FileController@show');
+    Route::post('files/update', 'FileController@update');
     Route::apiResource('files', 'FileController');
     
     Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');
@@ -65,6 +66,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('currency', 'CurrencyController');
 
     Route::get('document', 'DocumentController@index');
+    Route::post('document', 'DocumentController@update');
+    Route::delete('document/{id}', 'DocumentController@destroy');
     Route::get('document/{id}/{download?}', 'DocumentController@show');
 
     Route::get('fixed_asset', 'FixedAssetController');

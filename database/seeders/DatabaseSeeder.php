@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             SocietiesSeeder::class,
             TaxesDutiesAccesoriesSeeder::class,
             ToleranceGroupsSeeder::class,
-            FileSeender::class,
+            FileSeeder::class,
             TreatmentsSeeder::class,
         ]);
 

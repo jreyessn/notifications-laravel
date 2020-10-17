@@ -20,22 +20,12 @@ class FileController extends Controller
     ){
         $this->fileRepository = $fileRepository;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return $this->fileRepository->customPaginate();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(FileStoreRequest $request)
     {
 
@@ -44,9 +34,8 @@ class FileController extends Controller
 
             $data = $request->all();
             $file = $request->file("file");
-            $type = $request->type;
             
-            $data['name'] = basename(Storage::disk('local')->putFile($type, new File($file)));
+            $data['name'] = basename(Storage::disk('local')->putFile($data['type'], new File($file)));
             
             $store = $this->fileRepository->create($data);
             
@@ -65,19 +54,13 @@ class FileController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id, $download = null)
     {
         $file = $this->fileRepository->find($id);
 
         if(!$download)
             return $file;
-        return Storage::disk('local')->download('guides/'.$file->name, $file->name);
+        return Storage::disk('local')->download($file['type'].'/'.$file->name, $file->name);
     }
 
     public function showTerminos($download = null){
@@ -89,33 +72,26 @@ class FileController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(FileUpdateRequest $request, $id)
+ 
+    public function update(FileUpdateRequest $request)
     {
+
         DB::beginTransaction();
 
         try {
 
             $data = $request->all();
             $file = $request->file('file');
-            $type = $request->type;
-
-            $currentFile = $this->fileRepository->find($id);
+            $currentFile = $this->fileRepository->find($data['id']);
 
             if(!is_null($file)){
 
                 Storage::disk('local')->delete($currentFile->path);
 
-                $data['name'] = basename(Storage::disk('local')->putFile($type, new File($file)));
+                $data['name'] = basename(Storage::disk('local')->putFile($currentFile->type, new File($file)));
             }
 
-            $this->fileRepository->update($data, $id);
+            $this->fileRepository->update($data, $data['id']);
 
             DB::commit();  
 
@@ -131,12 +107,6 @@ class FileController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $file = $this->fileRepository->find($id);
@@ -144,4 +114,6 @@ class FileController extends Controller
 
         return response()->json(null, 204);
     }
+
+    
 }

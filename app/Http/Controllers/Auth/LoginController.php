@@ -61,6 +61,7 @@ class LoginController extends Controller
         ]);
 
         $credentials = $this->credentials($request);
+
         if (!Auth::attempt($credentials, $request->remember)) {
             $this->incrementLoginAttempts($request);
 

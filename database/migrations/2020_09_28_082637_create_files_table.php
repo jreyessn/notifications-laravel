@@ -15,10 +15,9 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string("type", 30)
-                  ->comment("Se define si es requisito, guia, terminos, etc");
+            $table->string("type", 30)->comment("Se define si es requisito, guia, terminos, etc");
             $table->string("title", 100);
-            $table->text("description");
+            $table->text("description")->nullable();
             $table->string("name");
             $table->timestamps();
             $table->softDeletes();

@@ -24,7 +24,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'show providers']);
         Permission::create(['name' => 'create providers']); // 5
         Permission::create(['name' => 'delete providers']); // 6
-        Permission::create(['name' => 'approve documents']);
+        Permission::create(['name' => 'approve documents']); // 7
         Permission::create(['name' => 'approve edit providers']);
         Permission::create(['name' => 'request edit providers']); // 9
         Permission::create(['name' => 'contract providers']); // 10
@@ -64,16 +64,16 @@ class PermissionsTableSeeder extends Seeder
         $compras->givePermissionTo(Permission::all()->except([3,5,6,9,10,12]));
 
         $legal = Role::create(['name' => 'Legal']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7]));
 
         $legal = Role::create(['name' => 'Fiscal']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7]));
         
         $legal = Role::create(['name' => 'Tesorería']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7]));
         
         $legal = Role::create(['name' => 'Auditoría']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7]));
         
     }
 }

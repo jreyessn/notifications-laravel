@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FileStoreRequest extends FormRequest
+class DocumentUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,17 +25,15 @@ class FileStoreRequest extends FormRequest
      */
     public function rules()
     {
+       
         return [
-            'file' => 'required|mimes:pdf',
-            'type' => 'required',
-            'title' => 'required'
+            'file' => 'nullable|mimes:pdf'
         ];
     }
 
     public function messages()
     {
         return [
-            'required' => 'El campo :attribute es obligatorio.',
             'file.mimes' => 'Solo se pueden adjuntar PDF'
         ];
     }

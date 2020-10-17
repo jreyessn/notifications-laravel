@@ -25,9 +25,11 @@ class FileUpdateRequest extends FormRequest
      */
     public function rules()
     {
+       
         return [
             'type' => 'required',
-            'title' => 'required'
+            'title' => 'required',
+            'file' => 'nullable|mimes:pdf'
         ];
     }
 
@@ -35,6 +37,7 @@ class FileUpdateRequest extends FormRequest
     {
         return [
             'required' => 'El campo :attribute es obligatorio.',
+            'file.mimes' => 'Solo se pueden adjuntar PDF'
         ];
     }
 

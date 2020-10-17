@@ -21,19 +21,19 @@ class FileSeeder extends Seeder
                 "title" => "Consideraciones a Proveedores Generales",
                 "description" => "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
                 "name" => "example.pdf",
-                "type" => "requisitos"
+                "type" => "requirements"
             ],
             [
                 "title" => "Requisito como Extranjeros",
                 "description" => "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
                 "name" => "example.pdf",
-                "type" => "requisitos"
+                "type" => "requirements"
             ],
             [
                 "title" => "Requisito para clientes",
                 "description" => "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
                 "name" => "example.pdf",
-                "type" => "requisitos"
+                "type" => "requirements"
             ],
             [
                 "title" => "Términos y Condiciones",

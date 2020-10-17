@@ -25,7 +25,7 @@ class FileCriteria implements CriteriaInterface
         $type = request()->get(config('repository.criteria.params.type', 'type'), null);
 
         if(!is_null($type))
-            $model = $model->where('type', $type);
+            $model = $model->whereIn('type', explode(',', $type));
 
         return $model;
     }
