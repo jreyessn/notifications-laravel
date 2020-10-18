@@ -19,7 +19,16 @@ class CreateProviderDocumentsTable extends Migration
             $table->foreignId("provider_id")->constrained();
             $table->string("name");
             $table->date("date")->nullable();
-            $table->boolean("approved")->default(0)->comment("0 en revision, 1 aprovado, 2 rechazado");
+            $table->boolean("approved")->default(0)->comment("0 en revision, 1 aprobado, 2 rechazado");
+            
+            $table->bigInteger('user_approver_id')->unsigned();
+            $table->foreign("user_approver_id")
+                  ->references('id')
+                  ->on('users')
+                  ->default(null)
+                  ->nullable()
+                  ->comment("Usuario que aprobó el doc");
+
             $table->text("note")->nullable();
             $table->timestamps();
             $table->softDeletes();

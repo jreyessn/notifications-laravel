@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Providers;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ApprovedEditInformation extends Notification
+class RequestEditInformation extends Notification
 {
     use Queueable;
+
+    public $data;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -40,10 +42,16 @@ class ApprovedEditInformation extends Notification
      */
     public function toMail($notifiable)
     {
+        $aproved_edit = request()->aproved_edit;
+        $reject_edit = request()->reject_edit;
+        $data = $this->data;
+
         return (new MailMessage)
-                    ->line('Su solicitud de edición ha sido aceptada.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    // ->line("El proveedor {$this->data->provider->applicant_name} ha solicitado modificar su información.")
+                    ->action('Aceptar', $aproved_edit.$this->data->provider->id)
+                    ->view('mails.requestEditInformation', compact('aproved_edit', 'reject_edit', 'data'));
+
+                    // ->line("<a class='btn btn-danger' href='{$reject_edit}{$this->data->provider->id}'>Rechazar</a>");
     }
 
     /**

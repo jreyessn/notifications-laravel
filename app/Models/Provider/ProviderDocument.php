@@ -2,6 +2,7 @@
 
 namespace App\Models\Provider;
 
+use App\Observers\ProviderDocumentLogObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,7 @@ class ProviderDocument extends Model
         'date',
         'approved',
         'note',
+        'user_approver_id'
     ];
 
     protected $with = ['document'];
@@ -37,5 +39,10 @@ class ProviderDocument extends Model
         return $this->belongsTo('App\Models\Provider\Provider');
     }
 
+    protected static function boot(){
+        parent::boot();
+
+        ProviderDocument::observe(ProviderDocumentLogObserver::class);
+    }
 
 }

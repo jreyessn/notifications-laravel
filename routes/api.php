@@ -50,10 +50,14 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('files/update', 'FileController@update');
     Route::apiResource('files', 'FileController');
     
-    Route::post('providers/request_edit_information', 'ProviderController@requestEditInformation');
-    Route::post('providers/approved_edit_information', 'ProviderController@approvedEditInformation');
-    Route::get('providers/document/{id}/{download?}', 'ProviderController@showDocument');
-    Route::apiResource('providers', 'ProviderController');
+
+    Route::post('providers/request_edit_information', 'Provider\ProviderController@requestEditInformation');
+    Route::post('providers/approved_edit_information', 'Provider\ProviderController@approvedEditInformation');
+    Route::get('providers/request_edit_show/{id}', 'Provider\ProviderController@requestEditShow');
+    Route::post('providers/change_status', 'Provider\ProviderDocumentController@changeStatus');
+
+    Route::get('providers/document/{id}/{download?}', 'Provider\ProviderController@showDocument');
+    Route::apiResource('providers', 'Provider\ProviderController');
     Route::apiResource('users','UserController');
     Route::apiResource('roles','RoleController');
 

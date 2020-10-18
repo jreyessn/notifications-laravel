@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Provider;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProviderRequestEdit;
-use Illuminate\Support\Facades\Mail;
 
-use App\Notifications\RequestEditInformation;
-use App\Notifications\ApprovedEditInformation;
+use App\Notifications\Providers\RequestEditInformation;
+use App\Notifications\Providers\ApprovedEditInformation;
+use App\Notifications\Providers\RejectEditInformation;
+use App\Http\Controllers\Controller;
+
 use App\Repositories\Users\UserRepositoryEloquent;
 use App\Http\Requests\Provider\ProviderStoreRequest;
 use App\Models\Provider\ProviderDocument;
@@ -35,6 +37,14 @@ class ProviderController extends Controller
     public function index()
     {
         return $this->providerRepository->list();
+    }
+
+    /* 
+    * Se muestra el proveedor relacionado a la id de la solicitud 
+    */
+
+    public function requestEditShow($id){
+        return ProviderRequestEdit::with('provider')->findOrFail($id);
     }
 
     /**
@@ -79,25 +89,37 @@ class ProviderController extends Controller
             return response()->json(['message' => 'ID de solicitud no encontrada'], 404);
             
         if($providerRequest->approved == 1)
-            return response()->json(['message' => 'Solicitud ya se encuentra aprobada'], 200);
+            return response()->json(['message' => 'Solicitud ya se encuentra aprobada'], 400);
         
         if($providerRequest->approved == 2)
-            return response()->json(['message' => 'Solicitud se encuentra rechazada'], 200);
+            return response()->json(['message' => 'Solicitud se encuentra rechazada'], 400);
 
         if(!$user->hasPermissionTo('approve edit providers'))
-            return response()->json(['message' => 'Usuario no cuenta con el permiso necesario para aprobar solicitudes'], 200);
+            return response()->json([
+                'message' => 'Usuario no cuenta con el permiso necesario para aprobar solicitudes'
+            ], 400);
 
         // actualizar y notificar al usuario
 
-        $providerRequest->provider->update(['can_edit' => 1]);
+        $providerRequest->provider->update(['can_edit' => $request->approved]);
 
-        ProviderRequestEdit::where('provider_id', $providerRequest->provider_id)
-                            ->update(['user_id' => $user->id, 'approved' => 1]);
+        ProviderRequestEdit::where([
+                                'provider_id' => $providerRequest->provider_id,
+                                'approved' => 0
+                            ])
+                            ->update([
+                                'user_id' => $user->id, 
+                                'approved' => $request->approved? 1 : 2,
+                                'note' => $request->note
+                            ]);
 
-
-        $providerRequest->provider->user->notify(new ApprovedEditInformation);
-
-        return response()->json(['message' => 'Se ha aprobado la solicitud'], 200);
+        if($request->approved){
+            $providerRequest->provider->user->notify(new ApprovedEditInformation);
+            return response()->json(['message' => 'Se ha aprobado la solicitud'], 200);
+        }
+       
+        $providerRequest->provider->user->notify(new RejectEditInformation($request->note));
+        return response()->json(['message' => 'Se ha rechazado la solicitud'], 200);
     }
 
     /** 

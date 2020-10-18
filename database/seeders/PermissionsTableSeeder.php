@@ -22,7 +22,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'list providers']);
         Permission::create(['name' => 'edit providers']); // 3
         Permission::create(['name' => 'show providers']);
-        Permission::create(['name' => 'create providers']); // 5
+        Permission::create(['name' => 'register provider']); // 5
         Permission::create(['name' => 'delete providers']); // 6
         Permission::create(['name' => 'approve documents']); // 7
         Permission::create(['name' => 'approve edit providers']);
@@ -52,9 +52,8 @@ class PermissionsTableSeeder extends Seeder
         $proveedor = Role::create(['name' => 'Proveedor']);
         $proveedor->givePermissionTo([
             'list providers',
-            'edit providers',
             'show providers',
-            'create providers',
+            'register provider',
             'request edit providers',
             'list requirements',
             'show requirements',

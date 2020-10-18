@@ -19,7 +19,15 @@ class CreateProviderDocumentLogsTable extends Migration
             $table->boolean("status_before")->default(0);
             $table->boolean("status_after")->default(0);
             $table->text("note")->nullable();
-            $table->foreignId("user_id")->constrained()->onDelete("cascade");
+            
+            $table->bigInteger('user_approver_id')->unsigned();
+            $table->foreign("user_approver_id")
+                  ->references('id')
+                  ->on('users')
+                  ->default(null)
+                  ->nullable()
+                  ->comment("Usuario que aprobó el doc");
+
             $table->timestamps();
         });
     }
