@@ -5,13 +5,12 @@ namespace App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProviderDocumentLog extends Model
+class ProviderSapAuthorization extends Model
 {
     protected $fillable = [
-        'provider_document_id',
-        'status_before',
-        'status_after',
+        'provider_sap_id',
+        'approved',
         'note',
-        'approver_by_user_id',
+        'user_id',
     ];
 }

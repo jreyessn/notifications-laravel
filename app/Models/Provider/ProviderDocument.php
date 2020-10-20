@@ -18,7 +18,7 @@ class ProviderDocument extends Model
         'date',
         'approved',
         'note',
-        'user_approver_id'
+        'approver_by_user_id'
     ];
 
     protected $with = ['document'];

@@ -32,7 +32,7 @@ class ProviderDocumentLogObserver
                 'status_before' => $providerDocument->getOriginal('approved'),
                 'status_after' => $providerDocument->approved,
                 'note' => $providerDocument->note,
-                'user_approver_id' => $providerDocument->user_approver_id
+                'approver_by_user_id' => $providerDocument->approver_by_user_id
             ]);
     }
 

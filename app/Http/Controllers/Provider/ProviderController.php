@@ -39,13 +39,71 @@ class ProviderController extends Controller
         return $this->providerRepository->list();
     }
 
-    /* 
-    * Se muestra el proveedor relacionado a la id de la solicitud 
-    */
 
-    public function requestEditShow($id){
-        return ProviderRequestEdit::with('provider')->findOrFail($id);
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ProviderStoreRequest $request)
+    {
+
+        try {
+            DB::beginTransaction();
+
+            $data = $request->all();
+
+            $store = $this->providerRepository->save($data);   
+            
+            DB::commit();
+
+            return response()->json([
+                "message" => "Registro éxitoso",
+                "data" => $store
+            ], 201);
+        } 
+        catch (\Exception $th) {
+            DB::rollback();
+
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
 
     /**
      * El proveedor envia post para solicitar editar su info. Se notifica por correo a todos los usuarios
@@ -135,67 +193,11 @@ class ProviderController extends Controller
         return Storage::disk('local')->download( $provider->document->folder.'/'.$provider->name, $provider->name);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ProviderStoreRequest $request)
-    {
+    /* 
+    * Se muestra el proveedor relacionado a la id de la solicitud 
+    */
 
-        try {
-            DB::beginTransaction();
-
-            $data = $request->all();
-
-            $store = $this->providerRepository->save($data);   
-            
-            DB::commit();
-
-            return response()->json([
-                "message" => "Registro éxitoso",
-                "data" => $store
-            ], 201);
-        } 
-        catch (\Exception $th) {
-            DB::rollback();
-
-            return response()->json(['message' => $th->getMessage()], 500);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function requestEditShow($id){
+        return ProviderRequestEdit::with('provider')->findOrFail($id);
     }
 }

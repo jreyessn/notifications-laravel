@@ -34,6 +34,8 @@ class Provider extends Model
         "retention",
         "retention_country", 
         "contracted",
+        "contracted_at",
+        "contracted_by_user_id",
         "can_edit",
         "note",
         "user_id"

@@ -13,14 +13,13 @@ use App\Models\Provider\ProviderReference;
 use App\Models\Provider\ProviderAccountBank;
 use App\Validators\Provider\ProviderValidator;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Provider\ProviderRepository;
 
 /**
  * Class ProviderRepositoryEloquent.
  *
  * @package namespace App\Repositories\Provider;
  */
-class ProviderRepositoryEloquent extends AppRepository implements ProviderRepository
+class ProviderRepositoryEloquent extends AppRepository
 {
 
     protected $fieldSearchable = [

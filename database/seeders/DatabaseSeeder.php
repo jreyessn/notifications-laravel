@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
             ToleranceGroupsSeeder::class,
             FileSeeder::class,
             TreatmentsSeeder::class,
+            TypeBankInterlocutorSeeder::class,
         ]);
 
         // Schema::enableForeignKeyConstraints();

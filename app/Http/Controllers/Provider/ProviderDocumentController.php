@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Provider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\Users\UserRepositoryEloquent;
 use App\Models\Provider\ProviderDocument;
-use App\Models\Provider\ProviderDocumentLog;
-use App\Repositories\Provider\ProviderRepositoryEloquent;
 
 class ProviderDocumentController extends Controller
 {
@@ -23,7 +20,7 @@ class ProviderDocumentController extends Controller
 
             $providerDocument->approved = $request->status;
             $providerDocument->note = $request->note;
-            $providerDocument->user_approver_id = $request->user()->id;
+            $providerDocument->approver_by_user_id = $request->user()->id;
             $providerDocument->save();
 
             return response()->json(['message' => 'Se ha cambiado el estado del documento con éxito'], 200);

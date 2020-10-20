@@ -20,12 +20,10 @@ class CreateProviderDocumentLogsTable extends Migration
             $table->boolean("status_after")->default(0);
             $table->text("note")->nullable();
             
-            $table->bigInteger('user_approver_id')->unsigned();
-            $table->foreign("user_approver_id")
+            $table->bigInteger('approver_by_user_id')->unsigned();
+            $table->foreign("approver_by_user_id")
                   ->references('id')
                   ->on('users')
-                  ->default(null)
-                  ->nullable()
                   ->comment("Usuario que aprobó el doc");
 
             $table->timestamps();

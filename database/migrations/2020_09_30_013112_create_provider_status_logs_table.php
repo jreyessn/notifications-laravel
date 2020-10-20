@@ -19,7 +19,7 @@ class CreateProviderStatusLogsTable extends Migration
             $table->boolean("status_before")->default(0);
             $table->boolean("status_after")->default(0);
             $table->text("note")->nullable();
-            $table->foreignId("user_id")->constrained()->onDelete('cascade');
+            $table->foreignId("user_id")->constrained();
             $table->timestamps();
         });
     }

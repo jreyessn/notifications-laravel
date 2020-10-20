@@ -37,8 +37,16 @@ class CreateProvidersTable extends Migration
             $table->string("website")->nullable();
             $table->boolean("retention")->default(0)->comment("1 si, 0 no");
             $table->string("retention_country", 50)->nullable();
+
             $table->boolean("contracted")->default(0)->comment("1 contratado, 2 rechazado, 0 en espera");
             $table->text("note")->nullable();
+
+            $table->timestamp('contracted_at')->nullable();
+            $table->unsignedBigInteger("contracted_by_user_id")->nullable();
+            $table->foreign('contracted_by_user_id')
+                  ->nullable()
+                  ->references('id')->on('users');
+            
             $table->boolean('can_edit')->default(0);
             $table->foreignId("user_id")->constrained();
             $table->timestamps();

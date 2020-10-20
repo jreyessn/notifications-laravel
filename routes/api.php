@@ -50,14 +50,19 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('files/update', 'FileController@update');
     Route::apiResource('files', 'FileController');
     
+    // endpoins relativos a la funcionalidad de proveedores (registro, aprobaciones, listados)
 
     Route::post('providers/request_edit_information', 'Provider\ProviderController@requestEditInformation');
-    Route::post('providers/approved_edit_information', 'Provider\ProviderController@approvedEditInformation');
     Route::get('providers/request_edit_show/{id}', 'Provider\ProviderController@requestEditShow');
+    Route::post('providers/approved_edit_information', 'Provider\ProviderController@approvedEditInformation');
     Route::post('providers/change_status', 'Provider\ProviderDocumentController@changeStatus');
-
     Route::get('providers/document/{id}/{download?}', 'Provider\ProviderController@showDocument');
     Route::apiResource('providers', 'Provider\ProviderController');
+
+    // endpoins relativos a la funcionalidad de dar de alta de proveedores para sap
+
+    Route::apiResource('providers_sap', 'Provider\ProviderSapController');
+
     Route::apiResource('users','UserController');
     Route::apiResource('roles','RoleController');
 
