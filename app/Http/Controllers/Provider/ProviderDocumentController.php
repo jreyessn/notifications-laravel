@@ -12,8 +12,8 @@ class ProviderDocumentController extends Controller
 
     public function changeStatus(Request $request){
         $providerDocument = ProviderDocument::findOrFail($request->provider_document_id);
-        
-        if($request->user()->hasPermissionTo('approve documents'))
+     
+        if(!$request->user()->hasPermissionTo('approve documents'))
             return response()->json(['message' => 'No cuenta con el permiso necesario para aprobar documentos'], 400);
 
         try {

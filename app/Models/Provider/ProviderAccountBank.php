@@ -23,7 +23,21 @@ class ProviderAccountBank extends Model
         "bank_id"
     ];
 
+    protected $with = [
+        'bank_country',
+        'bank'
+    ];
+
     public function provider(){
         return $this->belongsTo('App\Models\Provider\ProviderAccountBank');
     }
+
+    public function bank_country(){
+        return $this->belongsTo('App\Models\BankCountry');
+    }
+    
+    public function bank(){
+        return $this->belongsTo('App\Models\Bank');
+    }
+
 }

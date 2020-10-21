@@ -46,6 +46,12 @@ class Provider extends Model
         'contracted' => 'boolean',
     ];
 
+    protected $with = [
+        'country',
+        'state',
+        'city'
+    ];
+
     public function setRetentionAttribute($value){
         return is_null($value)? 0 : $value;
     }
@@ -70,4 +76,15 @@ class Provider extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function country(){
+        return $this->belongsTo('App\Models\Country');
+    }
+
+    public function state(){
+        return $this->belongsTo('App\Models\State');
+    }
+
+    public function city(){
+        return $this->belongsTo('App\Models\City');
+    }
 }

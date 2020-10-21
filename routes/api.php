@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     Route::get('business_types', 'BusinessTypeController');
     Route::get('accounts_group', 'AccountsGroupController');
+    Route::get('associated_account', 'AssociatedAccountController');
     Route::get('bank', 'BankController');
     Route::get('bank_country', 'BankCountryController');
     Route::get('currency', 'CurrencyController');

@@ -44,6 +44,7 @@ class ProviderRepositoryEloquent extends AppRepository
             $query->where('user_id', request()->user()->id);
         });
 
+        $this->with(['account_bank']);
         return $this->customPaginate();
     }
 
