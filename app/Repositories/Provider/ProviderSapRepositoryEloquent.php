@@ -3,6 +3,9 @@
 namespace App\Repositories\Provider;
 
 use App\Models\Provider\ProviderSap;
+use App\Models\Provider\ProviderSapCompaniesParticipate;
+use App\Models\Provider\ProviderSapOrganization;
+use App\Models\Provider\ProviderSapSociety;
 use App\Models\Provider\ProviderSapToleranceGroup;
 use App\Repositories\AppRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -29,21 +32,60 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $providerSap->fill($data);
         $providerSap->save();
 
-        $this->saveTolerances($providerSap, $data['tolerance_group_id']);
+        $this->saveTolerances($providerSap, $data['tolerances']);
+        $this->saveOrganizations($providerSap, $data['organizations']);
+        $this->saveCompaniesParticipates($providerSap, $data['companies_participates']);
+        $this->saveSocieties($providerSap, $data['societies']);
 
         return $providerSap;
     }
 
     public function saveTolerances($providerSap, array $tolerances){
 
-        $savedTolerances = array_map(function($tolerance) use ($providerSap){
+        $saved = array_map(function($item) use ($providerSap){
             return [ 
-                'tolerance_group_id' => $tolerance,
+                'tolerance_group_id' => $item,
                 'provider_sap_id' => $providerSap->id
             ];
         }, $tolerances);
 
-        ProviderSapToleranceGroup::insert($savedTolerances);
+        ProviderSapToleranceGroup::insert($saved);
+    }
+    
+    public function saveOrganizations($providerSap, array $organizations){
+
+        $saved = array_map(function($item) use ($providerSap){
+            return [ 
+                'organization_id' => $item,
+                'provider_sap_id' => $providerSap->id
+            ];
+        }, $organizations);
+
+        ProviderSapOrganization::insert($saved);
+    }
+    
+    public function saveCompaniesParticipates($providerSap, array $companies){
+
+        $saved = array_map(function($item) use ($providerSap){
+            return [ 
+                'society_id' => $item,
+                'provider_sap_id' => $providerSap->id
+            ];
+        }, $companies);
+
+        ProviderSapCompaniesParticipate::insert($saved);
+    }
+    
+    public function saveSocieties($providerSap, array $societies){
+
+        $saved = array_map(function($item) use ($providerSap){
+            return [ 
+                'society_id' => $item,
+                'provider_sap_id' => $providerSap->id
+            ];
+        }, $societies);
+
+        ProviderSapSociety::insert($saved);
     }
     
 

@@ -13,8 +13,6 @@ class ProviderSap extends Model
 
     protected $fillable = [
         'provider_id',
-        "society_id",
-        "organization_id",
         "accounts_group_id",
         "treatment_id",
         "curp", 
@@ -54,7 +52,6 @@ class ProviderSap extends Model
         "conc_bonus_specie",
         "group_purchase",
         "term_delivery_prev",
-        "companies_participate_id",        
         "subject",
         "applicant",
         "purchase",

@@ -16,8 +16,8 @@ class CreateProviderSapTable extends Migration
         Schema::create('provider_sap', function (Blueprint $table) {
             $table->id();
             $table->foreignId('provider_id')->constrained();
-            $table->foreignId("society_id")->constrained();
-            $table->foreignId("organization_id")->constrained();
+            // $table->foreignId("society_id")->constrained();
+            // $table->foreignId("organization_id")->constrained();
             $table->foreignId("accounts_group_id")->constrained();
             $table->foreignId("treatment_id")->constrained();
             $table->string("curp", 200)->nullable();
@@ -63,8 +63,8 @@ class CreateProviderSapTable extends Migration
             $table->string("group_purchase", 200)->nullable();
             $table->string("term_delivery_prev", 200)->nullable();
             
-            $table->unsignedBigInteger("companies_participate_id");
-            $table->foreign('companies_participate_id')->references('id')->on('accounts_groups');
+            // $table->unsignedBigInteger("companies_participate_id");
+            // $table->foreign('companies_participate_id')->references('id')->on('societies');
             
             $table->string("subject")->nullable();
             $table->string("applicant")->nullable();

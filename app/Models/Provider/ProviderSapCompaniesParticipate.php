@@ -4,12 +4,12 @@ namespace App\Models\Provider;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProviderRetentionType extends Model
+class ProviderSapCompaniesParticipate extends Model
 {
 
     protected $fillable = [
-        'provider_id',
-        'retention_type_id',
+        'provider_sap_id',
+        'society_id',
     ];
     
 }

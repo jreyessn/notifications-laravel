@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RetentionType extends Model
 {
     protected $fillable = ['code', 'description'];
-
+    
+    protected $hidden = ['pivot'];
 
 }

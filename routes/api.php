@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
     // endpoins relativos a la funcionalidad de dar de alta de proveedores para sap
 
-    Route::apiResource('providers_sap', 'Provider\ProviderSapController');
+    Route::apiResource('providers/providers_sap', 'Provider\ProviderSapController');
 
     Route::apiResource('users','UserController');
     Route::apiResource('roles','RoleController');
@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('taxes_duties_accesory', 'TaxesDutiesAccesoryController');
     Route::get('tolerance_group', 'ToleranceGroupController');
     Route::get('treatment', 'TreatmentController');
+    Route::get('type_bank_interlocutor', 'TypeBankInterlocutorController');
 
     Route::get('countries', 'CountriesController@getCountries');
     Route::get('states', 'CountriesController@getStates');

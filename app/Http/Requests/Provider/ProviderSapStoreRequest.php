@@ -22,16 +22,15 @@ class ProviderSapStoreRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
+    {        
         return [
             "provider_id" => "required|exists:providers,id",
-            "society_id" => "required|exists:societies,id",
-            "organization_id" => "required|exists:organizations,id",
+            "societies" => "required|array",
+            "organizations" => "required|array",
             "accounts_group_id" => "required|exists:accounts_groups,id",
             "treatment_id" => "required|exists:treatments,id",
             "natural_person" => "required|boolean",
-            "type_bank_interlocutor_id" => "required|exists:type_bank_interlocutors,id",
-            "reference_bank" => "required|string",
+            // "type_bank_interlocutor_id" => "required|exists:type_bank_interlocutors,id",
             "fixed_asset_id" => "required|exists:fixed_assets,id",
             "lease_id" => "required|exists:leases,id",
             "fuel_id" => "required|exists:fuels,id",
@@ -50,11 +49,11 @@ class ProviderSapStoreRequest extends FormRequest
             "verif_fra_dob" => "required|boolean",
             "payment_method_id" => "required|exists:payment_methods,id",
             "currency_id" => "required|exists:currencies,id",
-            "tolerance_group_id" => "required|array",
+            "tolerances" => "required|array",
             "verif_invoice_base_em" => "required|boolean",
             "verif_invoice_relac_service" => "required|boolean",
             "order_automatic_permitted" => "required|boolean",
-            "companies_participate_id" => "required|exists:societies,id",
+            "companies_participates" => "required|array",
             "applicant" => "required|string",
             "purchase" => "required|string",
          ];
