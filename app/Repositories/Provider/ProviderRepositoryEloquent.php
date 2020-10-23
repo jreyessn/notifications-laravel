@@ -96,7 +96,7 @@ class ProviderRepositoryEloquent extends AppRepository
             if(!is_null($currentFile)){
 
                 $file =  new File($currentFile);
-                $name =  basename(Storage::disk('local')->putFile($document->folder, "{$provider_id}-{$file}"));
+                $name =  basename(Storage::disk('local')->putFile($document->folder, $file));
                 $document_id = $document->id;
 
                 array_push($documentsSave, compact('provider_id', 'name', 'document_id'));                           
