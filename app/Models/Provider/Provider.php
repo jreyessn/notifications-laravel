@@ -60,6 +60,10 @@ class Provider extends Model
         return $this->hasOne('App\Models\Provider\ProviderAccountBank');
     }
 
+    public function provider_sap(){
+        return $this->hasOne('App\Models\Provider\ProviderSap');
+    }
+
     public function retention_types(){
         return $this->belongsToMany('App\Models\RetentionType', 'provider_retention_types');
     }

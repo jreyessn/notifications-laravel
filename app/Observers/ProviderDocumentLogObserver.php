@@ -26,7 +26,7 @@ class ProviderDocumentLogObserver
      */
     public function updated(ProviderDocument $providerDocument)
     {
-        if($providerDocument->approved != $providerDocument->getOriginal('approved'))
+        if($providerDocument->approved != $providerDocument->getOriginal('approved') && !is_null($providerDocument->approver_by_user_id))
             ProviderDocumentLog::create([
                 'provider_document_id' => $providerDocument->id,
                 'status_before' => $providerDocument->getOriginal('approved'),
