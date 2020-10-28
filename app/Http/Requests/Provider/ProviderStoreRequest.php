@@ -20,6 +20,8 @@ class ProviderStoreRequest extends FormRequest
         return true;
     }
 
+    // Una lógica hecha inicialmente para detectar una fecha dentro de los pdf
+
     protected function prepareForValidation() 
     {
         // if(!is_null($this->constancia_situacion_fiscal_file)){
@@ -30,9 +32,9 @@ class ProviderStoreRequest extends FormRequest
         //     $this->merge(['estado_cuenta_date' => $this->captureDate($this->estado_cuenta_file)]);
         // }
         
-        if(!is_null($this->formato_32d_file)){
-            $this->merge(['formato_32d_date' => $this->captureDate($this->formato_32d_file)]);
-        }
+        // if(!is_null($this->formato_32d_file)){
+        //     $this->merge(['formato_32d_date' => $this->captureDate($this->formato_32d_file)]);
+        // }
         
         // if(!is_null($this->comprobante_domicilio_file)){
         //     $this->merge(['comprobante_domicilio_date' => $this->captureDate($this->comprobante_domicilio_file)]);
@@ -47,6 +49,8 @@ class ProviderStoreRequest extends FormRequest
      */
     public function rules()
     {
+
+        // dd($this->all());
 
         return [
             'applicant_name' => '',
@@ -90,19 +94,19 @@ class ProviderStoreRequest extends FormRequest
             'acta_constitutiva_date' => 'date|nullable',
 
             'constancia_situacion_fiscal_file' => 'file|mimes:pdf|nullable',
-            'constancia_situacion_fiscal_date' => ['nullable', ],
+            'constancia_situacion_fiscal_date' =>  ['date', 'nullable' ,new ValidDateDocument],
 
             'copia_identificacion_file' => 'file|mimes:pdf|nullable',
             'copia_identificacion_date' => 'date|nullable',
 
             'formato_32d_file' => 'file|mimes:pdf|nullable',
-            'formato_32d_date' => ['nullable', new ValidDateDocument],
+            'formato_32d_date' => ['date', 'nullable' ,new ValidDateDocument],
 
             'estado_cuenta_file' => 'file|mimes:pdf|nullable',
-            'estado_cuenta_date' => ['nullable', ],
+            'estado_cuenta_date' => ['date', 'nullable' ,new ValidDateDocument],
 
             'comprobante_domicilio_file' => 'file|mimes:pdf|nullable',
-            'comprobante_domicilio_date' => ['nullable', ],
+            'comprobante_domicilio_date' => ['date', 'nullable' ,new ValidDateDocument],
 
             'imss_file' => 'file|mimes:pdf|nullable',
             'imss_date' => 'date|nullable',
@@ -193,17 +197,12 @@ class ProviderStoreRequest extends FormRequest
             'website' => 'Sitio Web',
             'retention' => 'Retención',
 
-            'constancia_situacion_fiscal_date' => "Fecha de la Constancia de Situación Fiscal",
-            'estado_cuenta_date' => "Fecha del Estado de Cuenta",
-            'formato_32d_date' => "Fecha del Formato 32d",
-            'comprobante_domicilio_date' => "Fecha del Comprobante de Domicilio",
+            'constancia_situacion_fiscal_date' => "Constancia de Situación Fiscal",
+            'estado_cuenta_date' => "Estado de Cuenta",
+            'formato_32d_date' => "Formato 32d",
+            'comprobante_domicilio_date' => "Comprobante de Domicilio",
         ];
     }
 
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
-    }
 
 }

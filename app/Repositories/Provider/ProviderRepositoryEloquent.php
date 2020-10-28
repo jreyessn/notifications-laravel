@@ -28,6 +28,13 @@ class ProviderRepositoryEloquent extends AppRepository
         'rfc' => 'like',
     ];
 
+    private $file_to_date = [
+        'constancia_situacion_fiscal_file' => 'constancia_situacion_fiscal_date',
+        'formato_32d_file' => 'formato_32d_date',
+        'estado_cuenta_file' => 'estado_cuenta_date',
+        'comprobante_domicilio_file' => 'comprobante_domicilio_date',
+    ];
+
     /**
      * Specify Model class name
      *
@@ -91,19 +98,30 @@ class ProviderRepositoryEloquent extends AppRepository
         $documents = Document::all();
 
         foreach($documents as $document){
-            $currentFile = array_key_exists($document->file_input_name, $data)? $data[ $document->file_input_name ] : null;
+            $currentFile = $data[ $document->file_input_name ] ?? null;
             
             if(!is_null($currentFile)){
 
-                $file =  new File($currentFile);
-                $name =  basename(Storage::disk('local')->putFile($document->folder, $file));
-                $document_id = $document->id;
+                $dateKey = $this->file_to_date[$document->file_input_name] ?? null;
+                $date = $data[$dateKey] ?? null;
 
-                array_push($documentsSave, compact('provider_id', 'name', 'document_id'));                           
+                $documentProvider = new ProviderDocument();
+                $documentProvider->provider_id = $provider_id;
+                $documentProvider->document_id = $document->id;
+                $documentProvider->date = $date;
+                $documentProvider->name = 'temp';
+                $documentProvider->save();
+
+                $file =  new File($currentFile);
+
+                $name =  basename(Storage::disk('local')->putFileAs($document->folder, $file, "{$documentProvider->id}-{$file->hashName()}"));
+
+                $documentProvider->name = $name;
+                $documentProvider->save();
             }
         }
 
-        ProviderDocument::insert($documentsSave);
+
     }
 
     /**

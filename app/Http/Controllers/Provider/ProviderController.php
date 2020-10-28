@@ -51,7 +51,7 @@ class ProviderController extends Controller
 
         try {
             DB::beginTransaction();
-
+            
             $data = $request->all();
 
             $store = $this->providerRepository->save($data);   
@@ -186,7 +186,7 @@ class ProviderController extends Controller
 
     public function showDocument(Request $request, $id, $download = null){
 
-        $provider = ProviderDocument::with('provider')->find($id);
+        $provider = ProviderDocument::with(['provider', 'user_approver'])->find($id);
         
         if(!$download)
             return $provider;

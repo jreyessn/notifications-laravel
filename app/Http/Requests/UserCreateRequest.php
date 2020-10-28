@@ -33,11 +33,25 @@ class UserCreateRequest extends FormRequest
                 is_null($id)? 'required' : 'nullable',
                 'string',
                 'min:6',
+                'required_with:password_confirm',
+                'same:password_confirm'
+            ],
+            'password_confirm'      =>  [
+                is_null($id)? 'required' : 'nullable',
+                'string',
+                'min:6',
             ],
             'name'                  =>  'required|string',
             'roles'                 =>  'required|array',
             'roles.*'               =>  'required|exists:roles,id',
             'phone'                 =>  'nullable|string|max:14',
+        ];
+    }
+
+
+    public function attributes(){
+        return [
+            'password_confirm' => "Confirmar Contraseña",
         ];
     }
 }

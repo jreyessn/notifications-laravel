@@ -39,6 +39,10 @@ class ProviderDocument extends Model
         return $this->belongsTo('App\Models\Provider\Provider');
     }
 
+    public function user_approver(){
+        return $this->belongsTo('App\Models\User', 'approver_by_user_id');
+    }
+
     protected static function boot(){
         parent::boot();
 

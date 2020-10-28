@@ -31,7 +31,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         return $this->repository->scopeQuery(function($query){
-            return $query->where('id', '!=', 1);
+            return $query->whereNotIn('id', [1, 8]);
         })->customPaginate();
     }
 

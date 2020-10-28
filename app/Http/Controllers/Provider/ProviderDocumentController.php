@@ -45,11 +45,11 @@ class ProviderDocumentController extends Controller
 
     public function updateDocument(Request $request){
         $providerDocument = ProviderDocument::findOrFail($request->id);
-        $provider_id = $providerDocument->provider->id;
 
         if(!is_null($request->file)){
-            
-            $name =  basename(Storage::disk('local')->putFile($providerDocument->document->folder, $request->file('file')));
+            $file =  $request->file('file');
+
+            $name =  basename(Storage::disk('local')->putFileAs($providerDocument->document->folder, $file, "{$providerDocument->id}-{$file->hashName()}"));
         
             $providerDocument->name = $name;
             $providerDocument->approved = 0;

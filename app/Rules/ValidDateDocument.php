@@ -28,8 +28,11 @@ class ValidDateDocument implements Rule
     {
         $date = new Carbon($value);
         $now = Carbon::now();
+        $now->hour = 0;
+        $now->minute = 0;
+        $now->second = 0;
 
-        if($date->diffInMonths($now) == 0)
+        if($date->diffInMonths($now) >= 3)
             return false;
         return true;
  
@@ -42,6 +45,6 @@ class ValidDateDocument implements Rule
      */
     public function message()
     {
-        return 'La fecha del :attribute debe ser inferior a los 3 meses.';
+        return 'La fecha de :attribute debe ser inferior a los 3 meses.';
     }
 }

@@ -15,7 +15,7 @@ class CreateProvidersTable extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->id();
-            $table->string("applicant_name");
+            $table->string("applicant_name")->nullable();
             $table->string("business_name");
             $table->string("rfc");
             $table->foreignId("business_type_id")->nullable()->constrained();
