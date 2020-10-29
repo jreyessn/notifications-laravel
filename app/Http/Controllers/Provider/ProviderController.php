@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Provider;
 
+use App\Criteria\PhaseProviderCriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProviderRequestEdit;
@@ -36,6 +37,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
+        $this->providerRepository->pushCriteria(PhaseProviderCriteria::class);
         return $this->providerRepository->list();
     }
 

@@ -92,7 +92,8 @@ class Provider extends Model
         return $this->belongsTo('App\Models\City');
     }
 
-    public function albums() {
-        return $this->belongsToMany('App\Models\RetentionIndicator', 'albumxuser_image','user_image_id','album_id');
+    public function business_type(){
+        return $this->belongsTo('App\Models\BusinessType');
     }
+
 }

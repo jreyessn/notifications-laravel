@@ -58,8 +58,17 @@ class UserController extends Controller
 
         try{
             $user = $this->repository->create($request->all());
-            $user->roles()->sync( $request->roles );
+            $roles = $request->roles;
 
+            // si es un rol diferente a compras y proveedor, se le asigna el rol especial
+            // de autorizaciones a sap
+
+            if(!in_array(2, $request->roles) && !in_array(3, $request->roles)){
+                array_push($roles, 8);
+            }
+
+            $user->roles()->sync($roles);
+            
             DB::commit();
 
             return response()->json([

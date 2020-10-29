@@ -2,8 +2,9 @@
 
 namespace App\Models\Provider;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\ProviderSapAuthorizeLogObserver;
 
 class ProviderSapAuthorization extends Model
 {
@@ -13,4 +14,30 @@ class ProviderSapAuthorization extends Model
         'note',
         'user_id',
     ];
+
+    protected $appends = [
+        'created_at_format',
+        'approved_text'
+    ];
+
+    private $status = ['En espera', 'Aprobado', 'Rechazado'];
+
+    public function getApprovedTextAttribute(){
+        return $this->status[$this->approved];
+    }
+
+    public function getCreatedAtFormatAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('d/m/Y H:i');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    protected static function boot(){
+        parent::boot();
+
+        ProviderDocument::observe(ProviderSapAuthorizeLogObserver::class);
+    }
 }

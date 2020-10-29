@@ -30,7 +30,8 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'contract providers']); // 10
         Permission::create(['name' => 'sap providers']);
         Permission::create(['name' => 'approve to sap']); //12
-        
+        Permission::create(['name' => 'list status documents']);
+
         Permission::create(['name' => 'list requirements']);
         Permission::create(['name' => 'edit requirements']);
         Permission::create(['name' => 'show requirements']);

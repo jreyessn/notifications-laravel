@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Provider\ProviderDocument;
 use App\Models\Provider\ProviderReference;
 use App\Models\Provider\ProviderAccountBank;
-use App\Validators\Provider\ProviderValidator;
 use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
@@ -25,6 +24,7 @@ class ProviderRepositoryEloquent extends AppRepository
     protected $fieldSearchable = [
         'applicant_name' => 'like',
         'business_name' => 'like',
+        'business_type.description' => 'like',
         'rfc' => 'like',
     ];
 
@@ -51,7 +51,6 @@ class ProviderRepositoryEloquent extends AppRepository
             $query->where('user_id', request()->user()->id);
         });
 
-        $this->with(['account_bank', 'retention_types', 'retention_indicators', 'provider_sap']);
         return $this->customPaginate();
     }
 
@@ -93,7 +92,6 @@ class ProviderRepositoryEloquent extends AppRepository
     }
 
     public function saveDocuments($data){
-        $documentsSave = array();
         $provider_id = $data['provider_id'];
         $documents = Document::all();
 

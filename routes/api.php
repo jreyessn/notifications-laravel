@@ -62,7 +62,9 @@ Route::group(['middleware' => 'auth:api'], function(){
 
     // endpoins relativos a la funcionalidad de dar de alta de proveedores para sap
 
-    Route::apiResource('providers/providers_sap', 'Provider\ProviderSapController');
+    Route::get('providers_sap/authorizations/{provider_sap_id}', 'Provider\ProviderSapAuthorizationController@show');
+    Route::post('providers_sap/authorize', 'Provider\ProviderSapAuthorizationController@store');
+    Route::apiResource('providers_sap', 'Provider\ProviderSapController');
 
     Route::apiResource('users','UserController');
     Route::apiResource('roles','RoleController');
