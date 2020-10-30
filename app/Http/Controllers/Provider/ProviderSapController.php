@@ -49,5 +49,56 @@ class ProviderSapController extends Controller
         }
     }
 
+    public function update(ProviderSapStoreRequest $request){
+        try {
+            DB::beginTransaction();
+
+            $data = $request->all();
+            $store = $this->sapRepository->saveUpdate($data);   
+            
+            DB::commit();
+
+            return response()->json([
+                "message" => "Actualización exitosa",
+                "data" => $store
+            ], 201);
+        } 
+        catch (\Exception $th) {
+            DB::rollback();
+
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
+    }
+
+    public function show($id){
+        return $this->sapRepository->with([
+            'tolerance_groups', 
+            'societies', 
+            'companies_participates', 
+            'organizations',
+            'accounts_group',
+            'treatment',
+            'type_bank_interlocutor',
+            'associated_account',
+            'payment_condition',
+            'payment_method',
+            'currency',
+            'fixed_asset',
+            'lease',
+            'fuel',
+            'freight_transport',
+            'officials_employee',
+            'taxes_duties_accesory',
+            'intercompany',
+            'maintenance',
+            'raw_material',
+            'raw_meat_material',
+            'raw_another_material',
+            'service',
+            'professional_service',
+            'provider'
+        ])->find($id);
+    }
+
 
 }

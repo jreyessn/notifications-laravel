@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Provider\ProviderSapAuthoRepositoryEloquent;
 use App\Repositories\Provider\ProviderSapRepositoryEloquent;
 use Illuminate\Http\Request;
+use App\Exports\SapExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProviderSapAuthorizationController extends Controller
 {
@@ -13,14 +15,17 @@ class ProviderSapAuthorizationController extends Controller
     protected $sapRepository;
     protected $sapAuthoRepository;
     
-    function __construct(ProviderSapRepositoryEloquent $sapRepository, ProviderSapAuthoRepositoryEloquent $sapAuthoRepository)
+    function __construct(
+        ProviderSapRepositoryEloquent $sapRepository, 
+        ProviderSapAuthoRepositoryEloquent $sapAuthoRepository
+    )
     {
         $this->sapRepository = $sapRepository;    
         $this->sapAuthoRepository = $sapAuthoRepository;    
     }
 
     public function store(Request $request){
-     
+
         if(!$request->user()->hasPermissionTo('approve to sap'))
             return response()->json(['message' => 'No cuenta con el permiso necesario para aprobar documentos'], 400);
 
@@ -42,6 +47,12 @@ class ProviderSapAuthorizationController extends Controller
         $providerSap = $this->sapAuthoRepository->getProviderSapWithAuthorizationMap($id);
 
         return $providerSap;
+    }
+
+    public function downloadExcelSap($id){
+        $data = $this->sapRepository->getSapFormatExcelData($id);
+
+        return Excel::download(new SapExport($data), 'users.xlsx');
     }
 
 }

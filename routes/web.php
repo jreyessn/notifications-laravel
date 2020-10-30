@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Society;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', 'Controller');
 
 Route::get('/', function () {
-   echo ini_get('post_max_size');
    return view('welcome');
 });
+
+Route::get('/excel', function () {
+   $societies = Society::all();
+
+   return view('exports.sap_excel', compact('societies'));
+});
+

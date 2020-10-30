@@ -48,7 +48,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'delete users']);
 
         $superadmin = Role::create(['name' => 'Administrador']);
-        $superadmin->givePermissionTo(Permission::all()->except([9,5]));
+        $superadmin->givePermissionTo(Permission::all()->except([9,5,12]));
         
         $proveedor = Role::create(['name' => 'Proveedor']);
         $proveedor->givePermissionTo([
@@ -64,16 +64,16 @@ class PermissionsTableSeeder extends Seeder
         $compras->givePermissionTo(Permission::all()->except([3,5,6,9,10,12]));
 
         $legal = Role::create(['name' => 'Legal']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
 
         $legal = Role::create(['name' => 'Fiscal']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
         
         $legal = Role::create(['name' => 'Tesorería']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
         
         $legal = Role::create(['name' => 'Auditoría']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,7,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
 
         $authorizationRol = Role::create(['name' => 'Autorizador SAP']);
         $authorizationRol->givePermissionTo(['approve to sap']);

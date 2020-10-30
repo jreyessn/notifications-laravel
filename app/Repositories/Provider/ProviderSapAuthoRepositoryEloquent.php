@@ -22,6 +22,12 @@ class ProviderSapAuthoRepositoryEloquent extends AppRepository
      *
      * @return string
      */
+
+     /* 
+     * Compras, Legal, Tesoreria, Auditoria
+     */
+    private $roleIdAuthorizators = [3,4,5,6,7];
+
     public function model()
     {
         return ProviderSapAuthorization::class;
@@ -36,14 +42,16 @@ class ProviderSapAuthoRepositoryEloquent extends AppRepository
     }
 
     public function getProviderSapWithAuthorizationMap($id){
-        $providerSap = ProviderSap::find($id);
-        $roleAuthorizators = $this->getRoleAuthorizators();
+        $providerSap = ProviderSap::find($id)->load('authorizations.user.roles');
+        $roleAuthorizators = Role::whereIn('id', $this->roleIdAuthorizators)->get();
         $authorizationsList = array();
-
+        
         foreach ($roleAuthorizators as $role) {
+            
+            $authorize = [];
 
             $temp = $providerSap->authorizations->filter(function($item) use ($role){
-                return ($item->user->roles->find($role->id));
+                return $item->user->roles->find($role->id)? true : false;
             });
 
             foreach ($temp as $value) {
@@ -57,10 +65,6 @@ class ProviderSapAuthoRepositoryEloquent extends AppRepository
         $providerSap->authorizes = $authorizationsList;
 
         return $providerSap;
-    }
-
-    private function getRoleAuthorizators(){
-        return Role::whereIn('id', [1,3,4,5,6,7])->get();
     }
     
 }

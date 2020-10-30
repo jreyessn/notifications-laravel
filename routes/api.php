@@ -42,6 +42,7 @@ Route::group([
     Route::get('find/{token}', 'ResetPasswordController@find');
 });
 
+
 Route::group(['middleware' => 'auth:api'], function(){
     
     Route::get('files/terminos', 'FileController@showTerminos');
@@ -64,6 +65,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
     Route::get('providers_sap/authorizations/{provider_sap_id}', 'Provider\ProviderSapAuthorizationController@show');
     Route::post('providers_sap/authorize', 'Provider\ProviderSapAuthorizationController@store');
+    Route::get('providers_sap/download_xlsx_sap/{provider_sap_id}', 'Provider\ProviderSapAuthorizationController@downloadExcelSap');
     Route::apiResource('providers_sap', 'Provider\ProviderSapController');
 
     Route::apiResource('users','UserController');
