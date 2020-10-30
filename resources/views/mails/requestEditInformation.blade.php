@@ -95,7 +95,7 @@
         <hr style="border: 2px solid #2a416c;">
         <div class="" style="margin-top: 28px;">
           <p>
-            El proveedor {{ $data->provider->applicant_name }} ha solicitado modificar su información.
+            El proveedor {{ $data->provider->business_name }} ha solicitado modificar su información.
           </p>
 
           <hr>

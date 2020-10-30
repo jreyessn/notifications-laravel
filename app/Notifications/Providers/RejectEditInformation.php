@@ -41,9 +41,10 @@ class RejectEditInformation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Su solicitud de edición ha sido reachazada.')
-                    ->line('Motivo: '.$this->note)
-                    ->line('Thank you for using our application!');
+                    ->from(getenv('MAIL_FROM_ADDRESS'))
+                    ->subject("Solicitud de Edición Rechazada - Norson")
+                    ->line('Su solicitud de edición ha sido rechazada.')
+                    ->line('Motivo: '.$this->note);
     }
 
     /**

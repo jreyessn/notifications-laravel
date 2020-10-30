@@ -25,7 +25,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'register provider']); // 5
         Permission::create(['name' => 'delete providers']); // 6
         Permission::create(['name' => 'approve documents']); // 7
-        Permission::create(['name' => 'approve edit providers']);
+        Permission::create(['name' => 'approve edit providers']); // 8
         Permission::create(['name' => 'request edit providers']); // 9
         Permission::create(['name' => 'contract providers']); // 10
         Permission::create(['name' => 'sap providers']);
@@ -48,7 +48,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'delete users']);
 
         $superadmin = Role::create(['name' => 'Administrador']);
-        $superadmin->givePermissionTo(Permission::all()->except([9,5,12]));
+        $superadmin->givePermissionTo(Permission::all()->except([8,9,5,12]));
         
         $proveedor = Role::create(['name' => 'Proveedor']);
         $proveedor->givePermissionTo([
@@ -64,16 +64,16 @@ class PermissionsTableSeeder extends Seeder
         $compras->givePermissionTo(Permission::all()->except([3,5,6,9,10,12]));
 
         $legal = Role::create(['name' => 'Legal']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,8,9,12]));
 
         $legal = Role::create(['name' => 'Fiscal']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,8,9,12]));
         
         $legal = Role::create(['name' => 'Tesorería']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,8,9,12]));
         
         $legal = Role::create(['name' => 'Auditoría']);
-        $legal->givePermissionTo(Permission::all()->except([3,5,6,9,12]));
+        $legal->givePermissionTo(Permission::all()->except([3,5,6,8,9,12]));
 
         $authorizationRol = Role::create(['name' => 'Autorizador SAP']);
         $authorizationRol->givePermissionTo(['approve to sap']);

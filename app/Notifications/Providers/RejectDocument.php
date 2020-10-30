@@ -46,10 +46,11 @@ class RejectDocument extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->from(getenv('MAIL_FROM_ADDRESS'))
+                    ->subject("Documento Rechazado - Norson")
                     ->line("El documento {$this->document->title} de su registro ha sido rechazado")
-                    ->line("Motivo: {$this->note}")
-                    ->line("Puede ingresar al sistema para resubir su documento")
-                    ->action('Ingresar', url(getenv('APP_FRONTEND')));
+                    ->line("Motivo: {$this->note}");
+
     }
 
     /**

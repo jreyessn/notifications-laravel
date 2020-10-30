@@ -41,8 +41,9 @@ class ApprovedEditInformation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Su solicitud de edición ha sido aceptada.')
-                    ->line('Thank you for using our application!');
+                    ->from(getenv('MAIL_FROM_ADDRESS'))
+                    ->subject("Solicitud de Edición Aprobada - Norson")
+                    ->line('Su solicitud de edición ha sido aceptada.');
     }
 
     /**
