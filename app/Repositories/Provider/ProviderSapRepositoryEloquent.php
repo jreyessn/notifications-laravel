@@ -124,7 +124,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->provider->street_number;
         $data[] = $item->provider->colony;
         $data[] = $item->provider->zip_code;
-        $data[] = ''; // poblacion?
+        $data[] = $item->provider->city->name ?? ''; // poblacion?
         $data[] = $item->provider->country->iso2;
         $data[] = $item->provider->state->name ?? '';
         $data[] = $item->provider->phone;

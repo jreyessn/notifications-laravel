@@ -96,4 +96,8 @@ class Provider extends Model
         return $this->belongsTo('App\Models\BusinessType');
     }
 
+    public function references(){
+        return $this->hasMany('App\Models\Provider\ProviderReference');
+    }
+
 }

@@ -80,7 +80,14 @@ class ProviderController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->providerRepository->with([
+            'account_bank',
+            'retention_types',
+            'retention_indicators',
+            'documents',
+            'business_type',
+            'references'
+        ])->find($id);
     }
 
     /**
