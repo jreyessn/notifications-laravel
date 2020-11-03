@@ -27,14 +27,20 @@ class ProviderSapAuthorizationController extends Controller
     public function store(Request $request){
 
         if(!$request->user()->hasPermissionTo('approve to sap'))
-            return response()->json(['message' => 'No cuenta con el permiso necesario para aprobar documentos'], 400);
+            return response()->json(['message' => 'No cuenta con el permiso necesario para autorizar'], 400);
 
         try {
 
             $data = $request->all();
             $data['user_id'] = $request->user()->id;
+            $data['role_id'] = $request->user()->roles[0]->id;
 
-            $this->sapAuthoRepository->create($data);
+            $found = $this->sapAuthoRepository->where([
+                'provider_sap_id' => $data['provider_sap_id'],
+                'role_id' => $data['role_id']
+            ])->first();
+            $found->fill($data);
+            $found->save();
 
             return response()->json(['message' => 'Se ha autorizado este registro'], 200);
 
@@ -44,7 +50,7 @@ class ProviderSapAuthorizationController extends Controller
     }
 
     public function show($id){
-        $providerSap = $this->sapAuthoRepository->getProviderSapWithAuthorizationMap($id);
+        $providerSap = $this->sapRepository->with('authorizations')->find($id);
 
         return $providerSap;
     }

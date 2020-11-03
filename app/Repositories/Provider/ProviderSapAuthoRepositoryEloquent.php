@@ -41,8 +41,19 @@ class ProviderSapAuthoRepositoryEloquent extends AppRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function getProviderSapWithAuthorizationMap($id){
+    public function getProviderSapWithAuthorizationMap($id = 0){
+
+        if($id == 0)
+            return null;
+
         $providerSap = ProviderSap::find($id)->load('authorizations.user.roles');
+        $providerSap->authorizes = $this->findAuthorizateList($providerSap);
+        
+        return $providerSap;
+    }
+
+    public function findAuthorizateList($providerSap): array {
+        
         $roleAuthorizators = Role::whereIn('id', $this->roleIdAuthorizators)->get();
         $authorizationsList = array();
         
@@ -62,9 +73,7 @@ class ProviderSapAuthoRepositoryEloquent extends AppRepository
         }
 
 
-        $providerSap->authorizes = $authorizationsList;
-
-        return $providerSap;
+        return $authorizationsList;
     }
     
 }

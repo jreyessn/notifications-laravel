@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('providers/approved_edit_information', 'Provider\ProviderController@approvedEditInformation');
     Route::post('providers/change_status', 'Provider\ProviderDocumentController@changeStatus');
     Route::post('providers/update_document', 'Provider\ProviderDocumentController@updateDocument');
+    Route::post('providersUpdate', 'Provider\ProviderController@update');
     Route::apiResource('providers', 'Provider\ProviderController');
 
     // endpoins relativos a la funcionalidad de dar de alta de proveedores para sap

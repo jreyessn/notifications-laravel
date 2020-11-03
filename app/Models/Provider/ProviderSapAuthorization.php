@@ -5,6 +5,7 @@ namespace App\Models\Provider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\ProviderSapAuthorizeLogObserver;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 class ProviderSapAuthorization extends Model
 {
@@ -13,11 +14,17 @@ class ProviderSapAuthorization extends Model
         'approved',
         'note',
         'user_id',
+        'role_id'
     ];
 
     protected $appends = [
         'created_at_format',
         'approved_text'
+    ];
+
+    protected $with = [
+        'role',
+        'user'
     ];
 
     private $status = ['En espera', 'Aprobado', 'Rechazado'];
@@ -26,9 +33,18 @@ class ProviderSapAuthorization extends Model
         return $this->status[$this->approved];
     }
 
+    public function role(){
+        return $this->belongsTo(ModelsRole::class);
+    }
+
     public function getCreatedAtFormatAttribute()
     {
         return Carbon::parse($this->created_at)->format('d/m/Y H:i');
+    }
+
+    public function getUpdatedAtFormatAttribute()
+    {
+        return Carbon::parse($this->updated_at)->format('d/m/Y H:i');
     }
 
     public function user(){

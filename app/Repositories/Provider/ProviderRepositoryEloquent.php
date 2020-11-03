@@ -75,6 +75,27 @@ class ProviderRepositoryEloquent extends AppRepository
         return $store;
     }    
 
+    public function saveUpdate($data){
+        $data['provider_id'] = $data['id'];
+
+        $update = $this->find($data['provider_id']);
+        $update->can_edit = 0;
+        $update->fill($data);
+        $update->save();
+
+        $accountBank = ProviderAccountBank::find($data['account_bank_id']);
+        $accountBank->fill($data);
+        $accountBank->save();
+
+        $update->retention_types()->sync($data['retention_type_id']);
+        $update->retention_indicators()->sync($data['retention_indicator_id']);
+
+        ProviderReference::where('provider_id', $data['provider_id'])->delete();
+
+        $this->saveReferences($data);
+        $this->saveDocuments($data);
+    }
+
     public function saveReferences($data){
         $references = array();
 
@@ -97,18 +118,42 @@ class ProviderRepositoryEloquent extends AppRepository
 
         foreach($documents as $document){
             $currentFile = $data[ $document->file_input_name ] ?? null;
+            $dateKey = $this->file_to_date[$document->file_input_name] ?? null;
+            $date = $data[$dateKey] ?? null;
             
-            if(!is_null($currentFile)){
+            /*  
+            * Condición ocurre cuando se edita una fecha pero no se adjunta ningún documento
+            */
+            if(!is_null($date) && is_null($currentFile)){
+                $providerDocument = ProviderDocument::where([
+                    'provider_id' => $provider_id,
+                    'document_id' => $document->id
+                ]);
 
-                $dateKey = $this->file_to_date[$document->file_input_name] ?? null;
-                $date = $data[$dateKey] ?? null;
+                if(!is_null($providerDocument))
+                    $providerDocument->update(['date' => $date]);
 
-                $documentProvider = new ProviderDocument();
-                $documentProvider->provider_id = $provider_id;
-                $documentProvider->document_id = $document->id;
-                $documentProvider->date = $date;
-                $documentProvider->name = 'temp';
-                $documentProvider->save();
+            }
+
+            if(is_null($currentFile))
+                continue;
+
+
+                $documentProvider = ProviderDocument::updateOrCreate(
+                    [
+                        'provider_id' => $provider_id,
+                        'document_id' => $document->id
+                    ],
+                    [
+                        'provider_id'         => $provider_id,
+                        'document_id'         => $document->id,
+                        'date'                => $date,
+                        'name'                => 'temp',
+                        'approved'            => 0,
+                        'note'                => null,
+                        'approver_by_user_id' => null,
+                    ]
+                );
 
                 $file =  new File($currentFile);
 
@@ -116,7 +161,7 @@ class ProviderRepositoryEloquent extends AppRepository
 
                 $documentProvider->name = $name;
                 $documentProvider->save();
-            }
+            
         }
 
 

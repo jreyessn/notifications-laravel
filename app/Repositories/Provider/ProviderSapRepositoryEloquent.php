@@ -3,6 +3,7 @@
 namespace App\Repositories\Provider;
 
 use App\Models\Provider\ProviderSap;
+use App\Models\Provider\ProviderSapAuthorization;
 use App\Models\Provider\ProviderSapCompaniesParticipate;
 use App\Models\Provider\ProviderSapOrganization;
 use App\Models\Provider\ProviderSapSociety;
@@ -24,6 +25,9 @@ class ProviderSapRepositoryEloquent extends AppRepository
      *
      * @return string
      */
+
+    private $roleIdAuthorizators = [3,4,5,6,7];
+
     public function model()
     {
         return ProviderSap::class;
@@ -38,6 +42,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $this->saveOrganizations($providerSap, $data['organizations']);
         $this->saveCompaniesParticipates($providerSap, $data['companies_participates']);
         $this->saveSocieties($providerSap, $data['societies']);
+        $this->createAuthorizators($providerSap);
 
         return $providerSap;
     }
@@ -56,6 +61,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $this->saveOrganizations($providerSap, $data['organizations']);
         $this->saveCompaniesParticipates($providerSap, $data['companies_participates']);
         $this->saveSocieties($providerSap, $data['societies']);
+        $this->createAuthorizators($providerSap);
 
         return $providerSap;
     }
@@ -93,6 +99,26 @@ class ProviderSapRepositoryEloquent extends AppRepository
                 'society_id' => $item,
                 'provider_sap_id' => $providerSap->id
             ]);
+        }
+    }
+
+    public function createAuthorizators($providerSap){
+
+        foreach ($this->roleIdAuthorizators as $role_id) {
+
+            ProviderSapAuthorization::updateOrCreate(
+                [
+                   'provider_sap_id' => $providerSap->id,
+                   'role_id' => $role_id  
+                ],
+                [
+                    'note' => null,
+                    'user_id' => null,
+                    'role_id' => $role_id,
+                    'approved' => 0
+                ]
+            );
+
         }
     }
     

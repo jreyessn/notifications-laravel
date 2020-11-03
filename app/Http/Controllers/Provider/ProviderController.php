@@ -16,6 +16,7 @@ use App\Repositories\Users\UserRepositoryEloquent;
 use App\Http\Requests\Provider\ProviderStoreRequest;
 use App\Models\Provider\ProviderDocument;
 use App\Repositories\Provider\ProviderRepositoryEloquent;
+use App\Repositories\Provider\ProviderSapAuthoRepositoryEloquent;
 use Illuminate\Support\Facades\Storage;
 
 class ProviderController extends Controller
@@ -25,10 +26,12 @@ class ProviderController extends Controller
 
     public function __construct(
         ProviderRepositoryEloquent $providerRepository,
-        UserRepositoryEloquent $userRepository
+        UserRepositoryEloquent $userRepository,
+        ProviderSapAuthoRepositoryEloquent $providerSapAutho
     ){
         $this->providerRepository = $providerRepository;
         $this->userRepository = $userRepository;
+        $this->providerSapAutho = $providerSapAutho;
     }
     /**
      * Display a listing of the resource.
@@ -38,7 +41,9 @@ class ProviderController extends Controller
     public function index()
     {
         $this->providerRepository->pushCriteria(PhaseProviderCriteria::class);
-        return $this->providerRepository->list();
+        $list =  $this->providerRepository->list();
+
+        return $list;
     }
 
 
@@ -97,9 +102,27 @@ class ProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProviderStoreRequest $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            
+            $data = $request->all();
+
+            $store = $this->providerRepository->saveUpdate($data);   
+            
+            DB::commit();
+
+            return response()->json([
+                "message" => "Actualización éxitosa",
+                "data" => $store
+            ], 201);
+        } 
+        catch (\Exception $th) {
+            DB::rollback();
+
+            return response()->json(['message' => $th->getMessage()], 500);
+        }
     }
 
     /**

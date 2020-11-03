@@ -45,10 +45,21 @@ class PhaseProviderCriteria implements CriteriaInterface
             break;
 
             case 2:
-                $model = $model->has('provider_sap');
+
+                $model = $model->whereHas('authorizations', function($query){
+                    $query->where('provider_sap_authorizations.approved', '!=', 1);
+                });
+
             break;
 
             case 3:
+
+                $model = $model->whereHas('authorizations', function($query){
+                    $query->where('provider_sap_authorizations.approved',  1);
+                }, '=', 5);
+
+            break;
+            case 4:
                 $model = $model->where('contracted', 1);
             break;
             

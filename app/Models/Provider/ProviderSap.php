@@ -69,6 +69,10 @@ class ProviderSap extends Model
         'block_payment' => 'boolean',
     ];
 
+    protected $with = [
+        'authorizations'
+    ];
+
     public function authorizations(){
         return $this->hasMany('App\Models\Provider\ProviderSapAuthorization');
     }
