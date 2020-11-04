@@ -40,12 +40,14 @@ class CreateProvidersTable extends Migration
 
             $table->boolean("contracted")->default(0)->comment("1 contratado, 2 rechazado, 0 en espera");
             $table->text("note")->nullable();
-
             $table->timestamp('contracted_at')->nullable();
             $table->unsignedBigInteger("contracted_by_user_id")->nullable();
             $table->foreign('contracted_by_user_id')
                   ->nullable()
                   ->references('id')->on('users');
+
+            $table->text("reason_inactivated")->nullable();
+            $table->timestamp('inactivated_at')->nullable();      
             
             $table->boolean('can_edit')->default(0);
             $table->foreignId("user_id")->constrained();

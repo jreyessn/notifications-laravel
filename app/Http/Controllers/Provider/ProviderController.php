@@ -17,6 +17,7 @@ use App\Http\Requests\Provider\ProviderStoreRequest;
 use App\Models\Provider\ProviderDocument;
 use App\Repositories\Provider\ProviderRepositoryEloquent;
 use App\Repositories\Provider\ProviderSapAuthoRepositoryEloquent;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class ProviderController extends Controller
@@ -136,6 +137,54 @@ class ProviderController extends Controller
         //
     }
 
+
+    /* 
+    * Contratar proveedor (si esto cambia, considerar hacerlo en una tabla polimorfica para almacenar los logs de contrataciones)
+    */
+
+    public function contract(Request $request){
+        $provider = $this->providerRepository->find($request->provider_id);
+
+        try {
+            $fillData = $request->all();
+            $fillData['contracted_by_user_id'] = $request->user()->id;
+            $fillData['contracted_at'] = Carbon::now();
+
+            $provider->fill($fillData);
+            $provider->save();
+
+            return response()->json([
+                "message" => "Contratación éxitosa",
+            ], 200);
+        } 
+        catch (\Exception $th) {
+            return response()->json(['message' => $th->getMessage()], 500);
+        } 
+
+    }
+
+    /* 
+    * Inactivación (panel administrativo)
+    */
+    public function inactive(Request $request){
+        $provider = $this->providerRepository->find($request->provider_id);
+
+        try {
+            $fillData['reason_inactivated'] = $request->reason;
+            $fillData['inactivated_at'] = Carbon::now();
+
+            $provider->fill($fillData);
+            $provider->save();
+
+            return response()->json([
+                "message" => "Inactivación éxitosa",
+            ], 200);
+        } 
+        catch (\Exception $th) {
+            return response()->json(['message' => $th->getMessage()], 500);
+        } 
+
+    }
 
     /**
      * El proveedor envia post para solicitar editar su info. Se notifica por correo a todos los usuarios

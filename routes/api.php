@@ -44,6 +44,8 @@ Route::group([
 
 
 Route::group(['middleware' => 'auth:api'], function(){
+
+    Route::get('dashboard', 'DashboardController@index');
     
     Route::get('files/terminos', 'FileController@showTerminos');
     Route::get('files/terminos/{download?}', 'FileController@showTerminos');
@@ -59,6 +61,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('providers/approved_edit_information', 'Provider\ProviderController@approvedEditInformation');
     Route::post('providers/change_status', 'Provider\ProviderDocumentController@changeStatus');
     Route::post('providers/update_document', 'Provider\ProviderDocumentController@updateDocument');
+    Route::post('providers/contract', 'Provider\ProviderController@contract');
+    Route::post('providers/inactive', 'Provider\ProviderController@inactive');
     Route::post('providersUpdate', 'Provider\ProviderController@update');
     Route::apiResource('providers', 'Provider\ProviderController');
 

@@ -38,12 +38,15 @@ class Provider extends Model
         "contracted_by_user_id",
         "can_edit",
         "note",
-        "user_id"
+        "user_id",
+        "reason_inactivated",
+        "inactivated_at",
     ];
 
     protected $casts = [
         'can_edit' => 'boolean',
-        'contracted' => 'boolean',
+        'inactivated_at' => 'datetime',
+        'created_at' => 'datetime'
     ];
 
     protected $with = [
@@ -103,5 +106,10 @@ class Provider extends Model
     public function references(){
         return $this->hasMany('App\Models\Provider\ProviderReference');
     }
+
+    public function contracted_by_user(){
+        return $this->belongsTo('App\Models\User', 'contracted_by_user_id');
+    }
+
 
 }

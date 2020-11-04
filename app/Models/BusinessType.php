@@ -8,4 +8,7 @@ class BusinessType extends Model
 {
     protected $fillable = ['description'];
 
+    function providers(){
+        return $this->hasMany('App\Models\Provider\Provider');
+    }
 }

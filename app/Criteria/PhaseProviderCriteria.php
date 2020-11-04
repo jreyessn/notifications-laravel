@@ -59,12 +59,17 @@ class PhaseProviderCriteria implements CriteriaInterface
                 }, '=', 5);
 
             break;
+            
             case 4:
                 $model = $model->where('contracted', 1);
             break;
             
             case 5:
                 $model = $model->where('contracted', 2);
+            break;
+
+            case 6:
+                $model = $model->whereNotNull('inactivated_at');
             break;
         }
 
