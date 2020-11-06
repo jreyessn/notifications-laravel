@@ -16,6 +16,7 @@ class CreateProviderRequestEditsTable extends Migration
         Schema::create('provider_request_edits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('provider_id')->constrained()->onDelete('cascade');
+            $table->text('reason')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('no action');
             $table->boolean('approved')->default(0)->comment("0 en espera, 1 aprovado, 2 rechazado");
             $table->string('note')->nullable();

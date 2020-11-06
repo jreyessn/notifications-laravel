@@ -56,7 +56,6 @@ class ProviderController extends Controller
      */
     public function store(ProviderStoreRequest $request)
     {
-
         try {
             DB::beginTransaction();
             
@@ -165,19 +164,22 @@ class ProviderController extends Controller
 
     /* 
     * Inactivación (panel administrativo)
+    * Se utiliza el mismo endpoint para reactivar/inactivar. Cuando es reactivar la fecha de inactivated_at
+    * se deja en nulo, se guarda el historial y se le notifica al proveedor para que pueda editar su información
     */
     public function inactive(Request $request){
         $provider = $this->providerRepository->find($request->provider_id);
 
         try {
             $fillData['reason_inactivated'] = $request->reason;
-            $fillData['inactivated_at'] = Carbon::now();
+            $fillData['inactivated_at'] = $request->inactivate ? Carbon::now() : null;
+            $fillData['can_edit'] = $request->inactivate ? 0 : 1;
 
             $provider->fill($fillData);
             $provider->save();
 
             return response()->json([
-                "message" => "Inactivación éxitosa",
+                "message" => "Operación éxitosa",
             ], 200);
         } 
         catch (\Exception $th) {
@@ -201,7 +203,8 @@ class ProviderController extends Controller
             return response()->json(['message' => 'Ya tiene dos solicitudes pendientes', 'status' => false], 200);
 
         $providerRequest = ProviderRequestEdit::create([
-            'provider_id' => $request->id
+            'provider_id' => $request->id,
+            'reason' => $request->reason
         ]);
         
         $toUsers = $this->userRepository->getUsersPermissionPurchases();
@@ -233,7 +236,7 @@ class ProviderController extends Controller
         if($providerRequest->approved == 2)
             return response()->json(['message' => 'Solicitud se encuentra rechazada'], 400);
 
-        if(!$user->hasPermissionTo('approve edit providers'))
+        if(!$user->hasPermissionTo('approve providers edit'))
             return response()->json([
                 'message' => 'Usuario no cuenta con el permiso necesario para aprobar solicitudes'
             ], 400);

@@ -136,11 +136,10 @@ class ProviderSapRepositoryEloquent extends AppRepository
     private function mapSapFormatExcel($item){
         $data = array();
         $societiesMap = Society::all()->pluck('description')->toArray();
-
         $data[] = Carbon::parse($item->created_at)->format('d/m/yy');   
         $data[] = $item->provider_id;
-        $data[] = $item->societies[0]->code;
-        $data[] = $item->organizations[0]->code;
+        $data[] = $item->societies[0]->code ?? '';
+        $data[] = $item->organizations[0]->code ?? '';
         $data[] = $item->accounts_group->code;
         $data[] = $item->treatment->description;
         $data[] = $item->provider->business_name;
@@ -174,7 +173,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->verif_fra_dob? 'X' : '';
         $data[] = $item->payment_method->code;
         $data[] = $item->block_payment? 'X' : '';
-        $data[] = $item->tolerance_groups[0]->code;
+        $data[] = $item->tolerance_groups[0]->code ?? '';
         $data[] = $item->currency->code;
         $data[] = $item->incoterms;
         $data[] = $item->description_incoterms;
@@ -186,8 +185,8 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->group_purchase;
         $data[] = $item->term_delivery_prev;
         $data[] = $item->provider->retention_country;
-        $data[] = $item->provider->retention_types[0]->code;
-        $data[] = $item->provider->retention_indicators[0]->type;
+        $data[] = $item->provider->retention_types[0]->code ?? '';
+        $data[] = $item->provider->retention_indicators[0]->type ?? '';
         $data[] = $item->subject;
 
         foreach ($societiesMap as $society) {
@@ -199,7 +198,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = ''; // observacion??
         $data[] = $item->applicant;
         $data[] = $item->purchase;
-
+        
         return $data;
     }
 

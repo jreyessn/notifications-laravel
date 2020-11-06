@@ -2,6 +2,7 @@
 
 namespace App\Models\Provider;
 
+use App\Observers\ProviderObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -111,5 +112,10 @@ class Provider extends Model
         return $this->belongsTo('App\Models\User', 'contracted_by_user_id');
     }
 
+    protected static function boot(){
+        parent::boot();
+
+        Provider::observe(ProviderObserver::class);
+    }
 
 }

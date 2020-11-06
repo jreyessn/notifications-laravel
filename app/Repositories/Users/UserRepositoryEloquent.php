@@ -34,8 +34,8 @@ class UserRepositoryEloquent extends AppRepository implements UserRepository
     public function getUsersPermissionPurchases(){
         $users = $this->model->all();
 
-        $usersWithPermission = $users->reject(function($user, $key){
-            return !$user->hasPermissionTo('approve edit providers');
+        $usersWithPermission = $users->reject(function($user){
+            return !$user->hasRole('Compras');
         });
 
         return $usersWithPermission;

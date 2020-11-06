@@ -58,8 +58,6 @@ class ProviderRepositoryEloquent extends AppRepository
         
         $data['user_id'] = request()->user()->id;
 
-        // dd();
-
         $store = $this->create($data);
         
         $data['provider_id'] = $store->id;
@@ -137,7 +135,6 @@ class ProviderRepositoryEloquent extends AppRepository
 
             if(is_null($currentFile))
                 continue;
-
 
                 $documentProvider = ProviderDocument::updateOrCreate(
                     [

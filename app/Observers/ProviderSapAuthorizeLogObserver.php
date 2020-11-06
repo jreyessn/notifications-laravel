@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
+use App\Models\Provider\AuditStatusProvider;
 use App\Models\Provider\ProviderSapAuthorization;
-use App\Models\Provider\ProviderSapAuthorizationLog;
 
 class ProviderSapAuthorizeLogObserver
 {
@@ -15,7 +15,7 @@ class ProviderSapAuthorizeLogObserver
      */
     public function created(ProviderSapAuthorization $ProviderSapAuthorization)
     {
-
+            
     }
 
     /**
@@ -26,13 +26,15 @@ class ProviderSapAuthorizeLogObserver
      */
     public function updated(ProviderSapAuthorization $ProviderSapAuthorization)
     {        
-        if($ProviderSapAuthorization->approved != $ProviderSapAuthorization->getOriginal('approved') && !is_null($ProviderSapAuthorization->user_id))
-            ProviderSapAuthorizationLog::create([
-                'provider_sap_authorization_id' => $ProviderSapAuthorization->id,
+        if($ProviderSapAuthorization->approved != $ProviderSapAuthorization->getOriginal('approved'))
+            AuditStatusProvider::create([
+                'model_id' => $ProviderSapAuthorization->id,
+                'model_type' => ProviderSapAuthorization::class,
+                'action' => 'Autorización SAP',
                 'status_before' => $ProviderSapAuthorization->getOriginal('approved'),
                 'status_after' => $ProviderSapAuthorization->approved,
                 'note' => $ProviderSapAuthorization->note,
-                'approver_by_user_id' => $ProviderSapAuthorization->user_id
+                'user_id' => request()->user()->id
             ]);
     }
 

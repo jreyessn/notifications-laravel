@@ -4,7 +4,6 @@ namespace App\Repositories\Provider;
 
 use App\Models\Provider\ProviderSap;
 use App\Models\Provider\ProviderSapAuthorization;
-use App\Models\Provider\ProviderSapAuthorizationLog;
 use App\Models\User;
 use App\Repositories\AppRepository;
 use Prettus\Repository\Criteria\RequestCriteria;

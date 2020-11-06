@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
+use App\Models\Provider\AuditStatusProvider;
 use App\Models\Provider\ProviderDocument;
-use App\Models\Provider\ProviderDocumentLog;
 
 class ProviderDocumentLogObserver
 {
@@ -15,9 +15,9 @@ class ProviderDocumentLogObserver
      */
     public function created(ProviderDocument $providerDocument)
     {
-        //
+        
     }
-
+    
     /**
      * Handle the provider document "updated" event.
      *
@@ -26,13 +26,16 @@ class ProviderDocumentLogObserver
      */
     public function updated(ProviderDocument $providerDocument)
     {
-        if($providerDocument->approved != $providerDocument->getOriginal('approved') && !is_null($providerDocument->approver_by_user_id))
-            ProviderDocumentLog::create([
-                'provider_document_id' => $providerDocument->id,
+    
+        if($providerDocument->approved != $providerDocument->getOriginal('approved'))
+            AuditStatusProvider::create([
+                'model_id' => $providerDocument->id,
+                'model_type' => ProviderDocument::class,
+                'action' => 'Aprobación',
                 'status_before' => $providerDocument->getOriginal('approved'),
                 'status_after' => $providerDocument->approved,
-                'note' => $providerDocument->note,
-                'approver_by_user_id' => $providerDocument->approver_by_user_id
+                'note' => $providerDocument->approved == 0? 'Documento resubido' : $providerDocument->note,
+                'user_id' => request()->user()->id
             ]);
     }
 

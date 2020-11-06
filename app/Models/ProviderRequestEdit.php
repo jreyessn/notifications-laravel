@@ -11,9 +11,10 @@ class ProviderRequestEdit extends Model
 
     protected $fillable = [
         'provider_id',
+        'reason',
         'user_id',
         'note',
-        'approved'
+        'approved',
     ];
 
     public function provider(){

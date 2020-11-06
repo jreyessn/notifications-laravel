@@ -26,7 +26,7 @@ class ProviderSapAuthorizationController extends Controller
 
     public function store(Request $request){
 
-        if(!$request->user()->hasPermissionTo('approve to sap'))
+        if(!$request->user()->hasPermissionTo('authorize providers sap'))
             return response()->json(['message' => 'No cuenta con el permiso necesario para autorizar'], 400);
 
         try {

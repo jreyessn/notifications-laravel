@@ -54,6 +54,6 @@ class ProviderSapAuthorization extends Model
     protected static function boot(){
         parent::boot();
 
-        ProviderDocument::observe(ProviderSapAuthorizeLogObserver::class);
+        ProviderSapAuthorization::observe(ProviderSapAuthorizeLogObserver::class);
     }
 }
