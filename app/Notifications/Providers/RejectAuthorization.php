@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RejectEditInformation extends Notification
+class RejectAuthorization extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,10 @@ class RejectEditInformation extends Notification
      *
      * @return void
      */
-    public function __construct($note)
+    public function __construct($motivo)
     {
-        $this->note = $note;
+        // $this->provider = $provider;
+        $this->motivo = $motivo;
     }
 
     /**
@@ -42,9 +43,12 @@ class RejectEditInformation extends Notification
     {
         return (new MailMessage)
                     ->from(getenv('MAIL_FROM_ADDRESS'))
-                    ->subject("Solicitud Rechazada - Norson Alimentos")
-                    ->line('Lo lamentamos, la solicitud que ha realizado para modificar su información como proveedor ha sido rechazada.')
-                    ->line('Motivo: '.$this->note)
+                    ->subject("Información Rechazada - Norson Alimentos")
+                    ->greeting("Un saludo cordial, ")
+                    ->line("Su registro de proveedor está en fase de autorización.")
+                    ->line("La información que ha suministrado se encuentra errada. Es necesario que actualice sus datos en función del siguiente motivo.")
+                    ->line($this->motivo)
+                    ->action('Entrar', getenv('APP_FRONTEND'))
                     ->line('¡Gracias por querer ser parte de nosotros!');
     }
 

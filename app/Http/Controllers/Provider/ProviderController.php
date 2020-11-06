@@ -195,7 +195,10 @@ class ProviderController extends Controller
 
     public function requestEditInformation(Request $request){
 
-        $requestSends = ProviderRequestEdit::where('provider_id', $request->id)->get()->count(); 
+        $requestSends = ProviderRequestEdit::where([
+            'provider_id' => $request->id,
+            'approved' => 0
+        ])->get()->count(); 
     
         // limite de solicitudes 
 

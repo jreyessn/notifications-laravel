@@ -7,6 +7,7 @@ use App\Repositories\Provider\ProviderSapAuthoRepositoryEloquent;
 use App\Repositories\Provider\ProviderSapRepositoryEloquent;
 use Illuminate\Http\Request;
 use App\Exports\SapExport;
+use App\Notifications\Providers\RejectAuthorization;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProviderSapAuthorizationController extends Controller
@@ -42,7 +43,12 @@ class ProviderSapAuthorizationController extends Controller
             $found->fill($data);
             $found->save();
 
-            return response()->json(['message' => 'Se ha autorizado este registro'], 200);
+            if($data['approved'] == 2){
+                $found->provider_sap->provider->update(['can_edit' => 1]);
+                // $found->provider_sap->provider->user->notify(new RejectAuthorization($data['note']));
+            }
+
+            return response()->json(['message' => 'Se ha cambiado el estado de autorización éxitosamente'], 200);
 
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Ocurrió un error al autorizar. Contactar con soporte.'], 500);

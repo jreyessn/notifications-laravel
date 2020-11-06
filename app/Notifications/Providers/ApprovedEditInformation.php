@@ -42,8 +42,11 @@ class ApprovedEditInformation extends Notification
     {
         return (new MailMessage)
                     ->from(getenv('MAIL_FROM_ADDRESS'))
-                    ->subject("Solicitud de Edición Aprobada - Norson")
-                    ->line('Su solicitud de edición ha sido aceptada.');
+                    ->subject("Solicitud Aprobada - Norson Alimentos")
+                    ->line('La solicitud que ha realizado para modificar su información ha sido aprobada')
+                    ->action('Entrar', getenv('APP_FRONTEND'))
+                    ->line('¡Gracias por querer ser parte de nosotros!');
+
     }
 
     /**

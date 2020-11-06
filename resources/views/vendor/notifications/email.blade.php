@@ -1,14 +1,8 @@
 @component('mail::message')
 {{-- Greeting --}}
-{{-- @if (! empty($greeting))
+@if (! empty($greeting))
 # {{ $greeting }}
-@else
-@if ($level === 'error')
-# @lang('Whoops!')
-@else
-# @lang('Hello!')
 @endif
-@endif --}}
 
 {{-- Intro Lines --}}
 @foreach ($introLines as $line)
@@ -43,7 +37,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Un saludo'),<br>
+@lang('Se despide'),<br>
  Norson Alimentos
 @endif
 

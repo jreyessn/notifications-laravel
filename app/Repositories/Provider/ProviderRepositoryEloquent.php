@@ -85,6 +85,17 @@ class ProviderRepositoryEloquent extends AppRepository
         $accountBank->fill($data);
         $accountBank->save();
 
+        // cuando se actualiza, las autorizaciones pasan a estar en espera nuevamente (en caso de que hayan rechazadas)
+        // se asume que el proveedor actualizó su info en funcion de los rechazos 
+
+        foreach($update->authorizations as $authorization){
+            if($authorization->approved == 2)
+                $authorization->update([
+                    'approved' => 0,
+                    'note' => null
+                ]);
+        }
+
         $update->retention_types()->sync($data['retention_type_id']);
         $update->retention_indicators()->sync($data['retention_indicator_id']);
 

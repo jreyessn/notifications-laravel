@@ -72,13 +72,13 @@ class PermissionsTableSeeder extends Seeder
         $legal->givePermissionTo(Permission::all()->only([1,3,4,6,7,10,11]));
 
         $legal = Role::create(['name' => 'Fiscal']);
-        $legal->givePermissionTo(Permission::all()->except([1,3,4,6,7,10,11]));
+        $legal->givePermissionTo(Permission::all()->only([1,3,4,6,7,10,11]));
         
         $legal = Role::create(['name' => 'Tesorería']);
-        $legal->givePermissionTo(Permission::all()->except([1,3,4,6,7,10,11]));
+        $legal->givePermissionTo(Permission::all()->only([1,3,4,6,7,10,11]));
         
         $legal = Role::create(['name' => 'Auditoría']);
-        $legal->givePermissionTo(Permission::all()->except([1,3,4,6,7,10,11]));
+        $legal->givePermissionTo(Permission::all()->only([1,3,4,6,7,10,11]));
 
         $authorizationRol = Role::create(['name' => 'Autorizador SAP']);
         $authorizationRol->givePermissionTo(['authorize providers sap']);

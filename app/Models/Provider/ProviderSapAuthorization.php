@@ -47,6 +47,10 @@ class ProviderSapAuthorization extends Model
         return Carbon::parse($this->updated_at)->format('d/m/Y H:i');
     }
 
+    public function provider_sap(){
+        return $this->belongsTo('App\Models\Provider\ProviderSap');
+    }
+
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
