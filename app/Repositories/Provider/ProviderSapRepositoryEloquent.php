@@ -61,7 +61,6 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $this->saveOrganizations($providerSap, $data['organizations']);
         $this->saveCompaniesParticipates($providerSap, $data['companies_participates']);
         $this->saveSocieties($providerSap, $data['societies']);
-        $this->createAuthorizators($providerSap);
 
         return $providerSap;
     }
@@ -135,11 +134,13 @@ class ProviderSapRepositoryEloquent extends AppRepository
 
     private function mapSapFormatExcel($item){
         $data = array();
-        $societiesMap = Society::all()->pluck('description')->toArray();
+        $societiesMap = Society::orderBy('orden', 'asc')->get()->pluck('description')->toArray();
+
         $data[] = Carbon::parse($item->created_at)->format('d/m/yy');   
-        $data[] = $item->provider_id;
-        $data[] = $item->societies[0]->code ?? '';
-        $data[] = $item->organizations[0]->code ?? '';
+        $data[] = '';//$item->provider_id;
+        $data[] = $item->societies->pluck('code')->implode(',') ?? '';
+
+        $data[] = $item->organizations->pluck('code')->implode(',') ?? '';
         $data[] = $item->accounts_group->code;
         $data[] = $item->treatment->description;
         $data[] = $item->provider->business_name;
@@ -149,14 +150,14 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->provider->street_number;
         $data[] = $item->provider->colony;
         $data[] = $item->provider->zip_code;
-        $data[] = $item->provider->city->name ?? ''; // poblacion?
+        $data[] = $item->provider->city->name ?? ''; 
         $data[] = $item->provider->country->iso2;
         $data[] = $item->provider->state->name ?? '';
         $data[] = $item->provider->phone;
         $data[] = ''; // fax ??
         $data[] = $item->provider->rfc;
         $data[] = $item->curp;
-        $data[] = $item->provider->natural_person? 'X' : ''; // persona fisica es X
+        $data[] = $item->provider->natural_person? 'X' : '';
         $data[] = $item->alba;
         $data[] = $item->provider->account_bank->bank_country->description;
         $data[] = $item->provider->account_bank->bank->code;
@@ -165,7 +166,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->type_bank_interlocutor->description;
         $data[] = $item->reference_bank;
         $data[] = $item->number_account_alternative;
-        $data[] = 'L51'; // grupo de tesoreria ??
+        $data[] = $item->treasury_group->code;
         $data[] = $item->associated_account->code;
         $data[] = $item->clave_clasific;
         $data[] = $item->previous_account_number;
@@ -173,7 +174,7 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->verif_fra_dob? 'X' : '';
         $data[] = $item->payment_method->code;
         $data[] = $item->block_payment? 'X' : '';
-        $data[] = $item->tolerance_groups[0]->code ?? '';
+        $data[] = $item->tolerance_groups->pluck('code')->implode(',') ?? '';
         $data[] = $item->currency->code;
         $data[] = $item->incoterms;
         $data[] = $item->description_incoterms;
@@ -185,8 +186,8 @@ class ProviderSapRepositoryEloquent extends AppRepository
         $data[] = $item->group_purchase;
         $data[] = $item->term_delivery_prev;
         $data[] = $item->provider->retention_country;
-        $data[] = $item->provider->retention_types[0]->code ?? '';
-        $data[] = $item->provider->retention_indicators[0]->type ?? '';
+        $data[] = $item->provider->retention_types->pluck('code')->implode(',') ?? '';
+        $data[] = $item->provider->retention_indicators->pluck('type')->implode(',') ?? '';
         $data[] = $item->subject;
 
         foreach ($societiesMap as $society) {

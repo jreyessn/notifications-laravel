@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Repositories\FixedAsset;
+namespace App\Repositories\ToleranceGroup;
 
 use App\Repositories\AppRepository;
-use App\Models\FixedAsset;
+use App\Models\TreasuryGroup;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Validators\FixedAsset\FixedAssetValidator;
-use App\Repositories\FixedAsset\FixedAssetRepository;
 
 /**
- * Class FixedAssetRepositoryEloquent.
+ * Class TreasuryGroupRepositoryEloquent.
  *
- * @package namespace App\Repositories\FixedAsset;
+ * @package namespace App\Repositories\TreasuryGroupRepositoryEloquent;
  */
-class FixedAssetRepositoryEloquent extends AppRepository implements FixedAssetRepository
+class TreasuryGroupRepositoryEloquent extends AppRepository
 {
     protected $fieldSearchable = [
         'description' => 'like',
+        'code' => 'like',
+        'group.description' => 'like',
     ];
 
     /**
@@ -26,10 +26,8 @@ class FixedAssetRepositoryEloquent extends AppRepository implements FixedAssetRe
      */
     public function model()
     {
-        return FixedAsset::class;
+        return TreasuryGroup::class;
     }
-
-    
 
     /**
      * Boot up the repository, pushing criteria

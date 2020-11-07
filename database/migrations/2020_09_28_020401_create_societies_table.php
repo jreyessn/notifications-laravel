@@ -17,6 +17,7 @@ class CreateSocietiesTable extends Migration
             $table->id();
             $table->string("code", 30);
             $table->string("description", 100);
+            $table->integer("orden");
             $table->timestamps();
             $table->softDeletes();
         });

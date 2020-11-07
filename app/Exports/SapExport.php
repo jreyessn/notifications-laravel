@@ -30,7 +30,7 @@ class SapExport implements WithHeadings, FromArray, WithEvents
 
     public function headings(): array
     {
-        $societiesMap = Society::all()->pluck('description')->toArray();
+        $societiesMap = Society::orderBy('orden', 'asc')->get()->pluck('description')->toArray();
         
         $headingsRow2 = [
             'Periodo',
@@ -98,7 +98,7 @@ class SapExport implements WithHeadings, FromArray, WithEvents
         ]);
 
         $headingsRow2 = array_merge(['Fecha'], array_fill(1, 51, ''), $societiesMap);
-
+            
         return [
             $completeHeadings,
             $headingsRow2
@@ -115,18 +115,18 @@ class SapExport implements WithHeadings, FromArray, WithEvents
             return "A{$letter}";
         },$columnsRange));
 
-        $columnsRange = array_merge($columnsRange, ['BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BK']);
+        $columnsRange = array_merge($columnsRange, ['BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BK', 'BL']);
 
         // se combina las row 1 y 2 de las cabeceras
 
          foreach ($columnsRange as $key => $letter) {
-            if($key < 52 || $key > 57)
+            if($key < 52 || $key > 58)
                 $event->sheet->mergeCells("{$letter}1:{$letter}2");
          }
 
          // se combina las celdas de compañias
 
-         $event->sheet->mergeCells("BA1:BG1");
+         $event->sheet->mergeCells("BA1:BH1");
 
         // estilos grises
 
@@ -156,8 +156,8 @@ class SapExport implements WithHeadings, FromArray, WithEvents
 
         // aplicar estilos
 
-        $event->sheet->getStyle('B1:BK1')->applyFromArray($styleArrayGray);
-        $event->sheet->getStyle('B2:BK2')->applyFromArray($styleArrayGray);
+        $event->sheet->getStyle('B1:BH1')->applyFromArray($styleArrayGray);
+        $event->sheet->getStyle('B2:BH2')->applyFromArray($styleArrayGray);
         $event->sheet->getStyle('B1')->applyFromArray([
             'borders' => [
                 'left' => [
@@ -175,7 +175,7 @@ class SapExport implements WithHeadings, FromArray, WithEvents
             ]
         ]);
 
-        $event->sheet->getStyle('BA2:BG2')->applyFromArray([
+        $event->sheet->getStyle('BA2:BH2')->applyFromArray([
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                 'color' => ['argb' => 'FF000000']
@@ -185,7 +185,7 @@ class SapExport implements WithHeadings, FromArray, WithEvents
             ]
         ]);
 
-        // B - BK
+        // B - BL
         foreach ($columnsRange as $letter) {
             $event->sheet->getColumnDimension($letter)->setWidth(15);
             $event->sheet->getStyle("{$letter}1")->getAlignment()->setWrapText(true);
@@ -193,7 +193,7 @@ class SapExport implements WithHeadings, FromArray, WithEvents
 
         $event->sheet->getColumnDimension('A')->setWidth(13);
         $event->sheet->getColumnDimension('H')->setWidth(30);
-        $event->sheet->getColumnDimension('BK')->setWidth(40);
+        $event->sheet->getColumnDimension('BL')->setWidth(40);
 
         // estilos amarillos
         $event->sheet->getStyle('AN1:AV1')->applyFromArray([

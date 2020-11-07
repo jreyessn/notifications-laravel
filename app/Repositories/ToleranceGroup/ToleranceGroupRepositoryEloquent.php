@@ -5,7 +5,6 @@ namespace App\Repositories\ToleranceGroup;
 use App\Repositories\AppRepository;
 use App\Models\ToleranceGroup;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Validators\ToleranceGroup\ToleranceGroupValidator;
 use App\Repositories\ToleranceGroup\ToleranceGroupRepository;
 
 /**

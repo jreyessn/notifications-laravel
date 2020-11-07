@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFixedAssetsTable extends Migration
+class CreateTreasuryGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateFixedAssetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fixed_assets', function (Blueprint $table) {
+        Schema::create('treasury_groups', function (Blueprint $table) {
             $table->id();
             $table->string("code", 30);
             $table->string("description", 100);
+            $table->foreignId("group_id")->constrained();
+            $table->integer("orden");
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +31,6 @@ class CreateFixedAssetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fixed_assets');
+        Schema::dropIfExists('treasury_groups');
     }
 }

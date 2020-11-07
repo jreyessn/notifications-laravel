@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ToleranceGroup\TreasuryGroupRepositoryEloquent;
 use Illuminate\Http\Request;
-use App\Repositories\Service\ServiceRepositoryEloquent;
 
-class ServiceController extends Controller
+class TreasuryController extends Controller
 {
     private $repository;
 
     function __construct(
-        ServiceRepositoryEloquent $repository
+        TreasuryGroupRepositoryEloquent $repository
     ){
         $this->repository = $repository;
     }
+
     /**
      * Handle the incoming request.
      *

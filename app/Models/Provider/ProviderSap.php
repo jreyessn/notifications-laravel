@@ -4,10 +4,11 @@ namespace App\Models\Provider;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProviderSap extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'provider_sap';
 
@@ -22,19 +23,8 @@ class ProviderSap extends Model
         "type_bank_interlocutor_id",
         "reference_bank", 
         "number_account_alternative", 
-        "fixed_asset_id",
-        "lease_id",
-        "fuel_id",
-        "freight_transport_id",
-        "officials_employee_id",
-        "taxes_duties_accesory_id",
-        "intercompany_id",
-        "maintenance_id",
-        "raw_material_id",
-        "raw_meat_material_id",
-        "raw_another_material_id",
-        "service_id",
-        "professional_service_id",
+        "treasury_group_id",
+
         "associated_account_id",
         "clave_clasific", 
         "previous_account_number",
@@ -125,57 +115,10 @@ class ProviderSap extends Model
         return $this->belongsTo('App\Models\Currency');
     }
 
-    public function fixed_asset(){
-        return $this->belongsTo('App\Models\FixedAsset');
-    }
-    
-    public function lease(){
-        return $this->belongsTo('App\Models\Lease');
-    }
-    
-    public function fuel(){
-        return $this->belongsTo('App\Models\Fuel');
-    }
-    
-    public function freight_transport(){
-        return $this->belongsTo('App\Models\FreightTransport');
-    }
-    
-    public function officials_employee(){
-        return $this->belongsTo('App\Models\OfficialsEmployee');
-    }
-    
-    public function taxes_duties_accesory(){
-        return $this->belongsTo('App\Models\TaxesDutiesAccesory');
-    }
-    
-    public function intercompany(){
-        return $this->belongsTo('App\Models\Intercompany');
-    }
-    
-    public function maintenance(){
-        return $this->belongsTo('App\Models\Maintenance');
+    public function treasury_group(){
+        return $this->belongsTo('App\Models\TreasuryGroup');
     }
 
-    public function raw_material(){
-        return $this->belongsTo('App\Models\RawMaterial');
-    }
-
-    public function raw_meat_material(){
-        return $this->belongsTo('App\Models\RawMeatMaterial');
-    }
-
-    public function raw_another_material(){
-        return $this->belongsTo('App\Models\RawAnotherMaterial');
-    }
-
-    public function service(){
-        return $this->belongsTo('App\Models\Service');
-    }
-
-    public function professional_service(){
-        return $this->belongsTo('App\Models\ProfessionalService');
-    }
 
 
 

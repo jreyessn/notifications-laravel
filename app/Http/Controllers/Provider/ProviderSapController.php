@@ -83,19 +83,7 @@ class ProviderSapController extends Controller
             'payment_condition',
             'payment_method',
             'currency',
-            'fixed_asset',
-            'lease',
-            'fuel',
-            'freight_transport',
-            'officials_employee',
-            'taxes_duties_accesory',
-            'intercompany',
-            'maintenance',
-            'raw_material',
-            'raw_meat_material',
-            'raw_another_material',
-            'service',
-            'professional_service',
+            'treasury_group',
             'provider'
         ])->find($id);
     }

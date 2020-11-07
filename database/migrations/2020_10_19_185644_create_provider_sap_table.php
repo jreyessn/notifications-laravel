@@ -30,19 +30,7 @@ class CreateProviderSapTable extends Migration
 
             $table->string("reference_bank", 200)->nullable();
             $table->string("number_account_alternative", 200)->nullable();
-            $table->foreignId("fixed_asset_id")->constrained();
-            $table->foreignId("lease_id")->constrained();
-            $table->foreignId("fuel_id")->constrained();
-            $table->foreignId("freight_transport_id")->constrained();
-            $table->foreignId("officials_employee_id")->constrained();
-            $table->foreignId("taxes_duties_accesory_id")->constrained();
-            $table->foreignId("intercompany_id")->constrained();
-            $table->foreignId("maintenance_id")->constrained();
-            $table->foreignId("raw_material_id")->constrained();
-            $table->foreignId("raw_meat_material_id")->constrained();
-            $table->foreignId("raw_another_material_id")->constrained();
-            $table->foreignId("service_id")->constrained();
-            $table->foreignId("professional_service_id")->constrained();
+            $table->foreignId("treasury_group_id")->constrained();
             $table->foreignId("associated_account_id")->constrained();
             $table->string("clave_clasific", 200)->nullable();
             $table->string("previous_account_number", 200)->nullable();

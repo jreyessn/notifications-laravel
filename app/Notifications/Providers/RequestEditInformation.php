@@ -47,7 +47,7 @@ class RequestEditInformation extends Notification
         $data = $this->data;
 
         return (new MailMessage)
-                    ->from(getenv('MAIL_FROM_NAME').' - Compras')
+                    ->from(getenv('MAIL_FROM_ADDRESS'), getenv('MAIL_FROM_NAME').' - Compras')
                     ->subject("Solicitud de Edición - {$this->data->provider->business_name}")
                     ->line("El proveedor {$this->data->provider->business_name} ha solicitado modificar su información.")
                     ->line("Motivo: {$this->data->reason}.")

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRawMeatMaterialsTable extends Migration
+class CreateGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateRawMeatMaterialsTable extends Migration
      */
     public function up()
     {
-        Schema::create('raw_meat_materials', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string("code", 30);
             $table->string("description", 100);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->integer("orden");
         });
     }
 
@@ -29,6 +27,6 @@ class CreateRawMeatMaterialsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('raw_meat_materials');
+        Schema::dropIfExists('groups');
     }
 }
