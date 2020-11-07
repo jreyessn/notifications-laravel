@@ -41,7 +41,7 @@ class RejectEditInformation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from(getenv('MAIL_FROM_NAME'))
+                    ->from(getenv('MAIL_FROM_ADDRESS'), getenv('MAIL_FROM_NAME'))
                     ->subject("Solicitud Rechazada - Norson Alimentos")
                     ->line('Lo lamentamos, la solicitud que ha realizado para modificar su información como proveedor ha sido rechazada.')
                     ->line('Motivo: '.$this->note)
