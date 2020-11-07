@@ -45,7 +45,7 @@ class ProviderSapAuthorizationController extends Controller
 
             if($data['approved'] == 2){
                 $found->provider_sap->provider->update(['can_edit' => 1]);
-                // $found->provider_sap->provider->user->notify(new RejectAuthorization($data['note']));
+                $found->provider_sap->provider->user->notify(new RejectAuthorization($data['note']));
             }
 
             return response()->json(['message' => 'Se ha cambiado el estado de autorización éxitosamente'], 200);

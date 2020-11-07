@@ -41,7 +41,7 @@ class ApprovedEditInformation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from(getenv('MAIL_FROM_ADDRESS'))
+                    ->from(getenv('MAIL_FROM_NAME'))
                     ->subject("Solicitud Aprobada - Norson Alimentos")
                     ->line('La solicitud que ha realizado para modificar su información ha sido aprobada')
                     ->action('Entrar', getenv('APP_FRONTEND'))

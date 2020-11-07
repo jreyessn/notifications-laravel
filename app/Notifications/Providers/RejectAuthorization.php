@@ -42,7 +42,7 @@ class RejectAuthorization extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from(getenv('MAIL_FROM_ADDRESS'))
+                    ->from(getenv('MAIL_FROM_NAME'))
                     ->subject("Información Rechazada - Norson Alimentos")
                     ->greeting("Un saludo cordial, ")
                     ->line("Su registro de proveedor está en fase de autorización.")
