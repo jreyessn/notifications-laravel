@@ -38,6 +38,7 @@ class ProviderDocumentController extends Controller
             return response()->json(['message' => 'Se ha cambiado el estado del documento con éxito'], 200);
 
         } catch (\Throwable $th) {
+            dd($th);
             return response()->json(['message' => 'Ocurrió un error al guardar. Contactar con soporte.'], 500);
         }
         
