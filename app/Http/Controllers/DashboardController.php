@@ -17,11 +17,10 @@ class DashboardController extends Controller
         $data['providers_all'] = Provider::count();
 
         $data['providers_pendings'] = Provider::has('provider_sap', '<', 1)->count();
-        $data['providers_sap_register'] = Provider::has('provider_sap')->count();
-        
-        // $data['providers_sap_register'] = Provider::whereHas('authorizations', function($query){
-        //     $query->where('provider_sap_authorizations.approved', 1);
-        // })->count();
+                
+        $data['providers_sap_register'] = Provider::whereHas('authorizations', function($query){
+            $query->where('provider_sap_authorizations.approved', 1);
+        })->count();
         
         $data['providers_contracteds'] = Provider::where('contracted', 1)->count();
         $data['providers_no_contracteds'] = Provider::where('contracted', 2)->count();
