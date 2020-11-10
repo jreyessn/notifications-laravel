@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\User as UserUser;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -15,9 +15,9 @@ class UserSeeder extends Seeder
     public function run()
     {
 
-        User::query()->delete();
+        UserUser::query()->delete();
 
-        $user = User::create([
+        $user = UserUser::create([
             'name' => "Juan Reyes",
             'username' => "developer",
             "email" => "developer@gmail.com",
@@ -25,22 +25,13 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole(['Administrador']);
 
-        $user = User::create([
-            'name' => "Jesus Basurto",
-            'username' => "JeanlogisticsAdmin",
-            "email" => "jbasurto@empresainteligente.com",
+        $user = UserUser::create([
+            'name' => "Jon Doe",
+            'username' => "guest",
+            "email" => "guest@test.com",
             "password" => "1234"
         ]);
-        $user->assignRole(['Administrador']);
-
-        $user = User::create([
-            'name' => "Humberto",
-            'username' => "Humberto",
-            "email" => "compras@norson.com",
-            "password" => "1234"
-        ]);
-        $user->assignRole(['Compras', 'Autorizador SAP']);
-
+        $user->assignRole(['Invitado']);
 
     }
 }

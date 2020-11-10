@@ -20,9 +20,3 @@ Route::get('/', function () {
    return view('welcome');
 });
 
-Route::get('/excel', function () {
-   $societies = Society::all();
-
-   return view('exports.sap_excel', compact('societies'));
-});
-
