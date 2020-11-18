@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +49,18 @@ Route::apiResources([
 ],[
     'middleware' => 'auth:api'
 ]);
+
+Route::post('/42yUojv1YQPOssPEpn5i3q6vjdhh7hl7djVWDIAVhFDRMAwZ1tj0Og2v4PWyj4PZ/webhook', function () {
+
+    $update = Telegram::commandsHandler(true);
+    
+});
+
+Route::get("messages", function(){
+
+    Telegram::sendMessage([
+        'chat_id' => 875522064,
+        'text' => 'Hello world!'
+    ]);
+    // Log::info('message');
+});
